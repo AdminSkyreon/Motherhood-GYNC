@@ -8,10 +8,10 @@ export function generateStaticParams() {
   return getHospitalSlugs().map((slug) => ({ slug }));
 }
 
-export default async function HospitalLocationPage({ params }) {
+export default async function HospitalThankYouPage({ params }) {
   const { slug } = await params;
   const hospital = getHospitalBySlug(slug);
   if (!hospital) notFound();
 
-  return <HospitalLanding hospital={hospital} />;
+  return <HospitalLanding hospital={hospital} thankYouMode />;
 }

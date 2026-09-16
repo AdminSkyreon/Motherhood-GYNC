@@ -12,24 +12,20 @@ export default function LandingFooter({ data }) {
   const phoneDisplay = siteData?.phone?.display || '080 695 49251';
 
   return (
-    <footer className="bg-gray-900 text-gray-400 py-6 px-4 border-t border-gray-800 text-center">
-      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-1">
-        
-        {/* Desktop View: Single Line */}
-        <p className="text-sm text-gray-300 hidden sm:block">
+    <footer className="bg-gray-900 text-gray-400 py-3 px-4 border-t border-gray-800 text-center">
+      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center gap-0.5">
+        <p className="text-xs sm:text-sm text-gray-300 leading-snug hidden sm:block">
           © 2026 {siteData?.hospitalName || 'Motherhood Hospital Chennai'} · {regionLabel} · {phoneDisplay}
         </p>
 
-        {/* Mobile View: Two Lines (jaise reference image me hai) */}
-        <p className="text-sm text-gray-300 sm:hidden">
+        <p className="text-xs text-gray-300 leading-snug sm:hidden">
           © 2026 {siteData?.hospitalName || 'Motherhood Hospital Chennai'}
         </p>
-        <p className="text-sm text-gray-300 sm:hidden">
+        <p className="text-xs text-gray-300 leading-snug sm:hidden">
           {regionLabel} · {phoneDisplay}
         </p>
 
-        {/* Privacy Policy & Terms Links - Hidden on Mobile View */}
-        <div className="hidden md:flex items-center justify-center gap-2 text-sm mt-1">
+        <div className="hidden md:flex items-center justify-center gap-2 text-xs leading-snug">
           {footerData.privacyPolicyText && (
             <a href="/privacy-policy" className="hover:text-white transition-colors">
               {footerData.privacyPolicyText}

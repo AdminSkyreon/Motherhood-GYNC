@@ -1,35 +1,37 @@
+/** Phrase titles (e.g. "Trusted by") → metric in subtitle is the large stat. */
+function resolveStatLines(title, subtitle) {
+  const t = (title || "").trim();
+  const s = (subtitle || "").trim();
+  const titleLooksLikeLabel =
+    t.length > 0 &&
+    !/^[\d+]/.test(t) &&
+    !/^\d/.test(t) &&
+    !/^24\s*\/\s*7$/i.test(t) &&
+    t.toUpperCase() !== "NABH";
+
+  if (titleLooksLikeLabel && s) {
+    return { primary: s, label: t };
+  }
+  return { primary: t, label: s };
+}
+
 export default function LandingFeaturesBar({ features }) {
   if (!features || features.length === 0) return null;
 
   return (
-    <div className="w-full bg-gradient-to-r from-[#0057A4] via-[#2B6CB0] to-[#8031A7] py-8 text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
-        {features.map((item, index) => (
-          <div key={index} className="flex items-center space-x-4 pt-4 md:pt-0 md:pl-8 first:pl-0">
-            
-            {/* Direct Icon without background box */}
-            {item.icon && (
-              <div className="shrink-0 flex items-center justify-center">
-                <img 
-                  src={item.icon} 
-                  alt={item.title} 
-                  className="w-12 h-12 sm:w-14 sm:h-14 object-contain filter brightness-0 invert" 
-                />
-              </div>
-            )}
-            
-            {/* Title & Subtitle */}
-            <div>
-              <p className="text-base sm:text-lg font-extrabold font-['Montserrat',sans-serif] leading-tight">
-                {item.title}
-              </p>
-              <p className="text-xs sm:text-sm font-medium text-pink-100 font-['Montserrat',sans-serif]">
-                {item.subtitle}
-              </p>
+    <section className="stats-bar w-full">
+      <div className="stats-inner">
+        {features.map((item, index) => {
+          const { primary, label } = resolveStatLines(item.title, item.subtitle);
+
+          return (
+            <div key={`${item.title}-${index}`} className="stat-item">
+              <p className="stat-num">{primary}</p>
+              {label ? <p className="stat-label">{label}</p> : null}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }

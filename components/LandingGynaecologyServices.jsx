@@ -1,139 +1,89 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { assetPath } from "@/lib/assetPath";
+
+function ServiceIcon({ icon }) {
+  return (
+    <div className="service-icon-slot mb-2 w-full shrink-0 sm:mb-3">
+      {icon ? (
+        <img src={assetPath(icon)} alt="" className="service-icon-img" />
+      ) : (
+        <div className="h-16 w-16 rounded-full bg-mh-pink-soft" aria-hidden="true" />
+      )}
+    </div>
+  );
+}
+
+function ServiceCardBody({ item, tapExpanded }) {
+  return (
+    <>
+      <ServiceIcon icon={item.icon} />
+      <h3 className="gyn-service-title w-full text-xs font-extrabold leading-snug text-mh-blue transition-colors duration-300 font-['Montserrat',sans-serif] min-h-[2.75rem] sm:mb-2 sm:min-h-[2.75rem] sm:text-base md:text-[17px]">
+        {item.title}
+      </h3>
+      <div
+        className={`grid w-full grid-rows-[0fr] transition-all duration-300 ease-out group-hover:grid-rows-[1fr] ${
+          tapExpanded ? "max-sm:grid-rows-[1fr]" : "max-sm:grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="gyn-service-desc-panel pt-2 sm:pt-2.5">
+            <p className="gyn-service-desc text-[13px] font-medium leading-relaxed font-['Montserrat',sans-serif] sm:text-[15px]">
+              {item.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
 export default function LandingGynaecologyServices({ data }) {
   const [mobileSelected, setMobileSelected] = useState(null);
 
   if (!data || !data.enabled || !data.items) return null;
 
-  const handleMobileClick = (index) => {
+  const handleMobileTap = (index) => {
+    if (typeof window !== "undefined" && window.matchMedia("(min-width: 640px)").matches) {
+      return;
+    }
     setMobileSelected(mobileSelected === index ? null : index);
   };
 
   return (
-    <section className="py-12 md:py-16 bg-[#F4F8FC] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Heading */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-10 md:mb-14 font-['Montserrat',sans-serif]">
+    <section className="gynaecology-services-section py-5 md:py-7">
+      <div className="gynaecology-services-section__inner mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
+        <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>
 
-        {/* Mobile View: Auto-moving Marquee (Slider with Tap-to-Expand) */}
-        <div className="block sm:hidden w-full overflow-hidden relative">
-          <div className="flex space-x-4 w-max animate-marquee">
-            {/* Duplicating items to make the infinite loop seamless */}
-            {data.items.concat(data.items).map((item, index) => {
-              const actualIndex = index % data.items.length;
-              const isSelected = mobileSelected === actualIndex;
-
-              return (
-                <div 
-                  key={index} 
-                  onClick={() => handleMobileClick(actualIndex)}
-                  className={`flex flex-col items-center text-center cursor-pointer w-[130px] flex-shrink-0 p-3 rounded-2xl transition-all duration-300 ${
-                    isSelected ? 'bg-white shadow-md border border-pink-100 scale-105' : 'hover:bg-white/50'
-                  }`}
-                >
-                  {/* Icon Container */}
-                  <div className="w-20 h-20 flex items-center justify-center mb-2">
-                    {item.icon ? (
-                      <img 
-                        src={item.icon} 
-                        alt={item.title} 
-                        className="w-full h-full object-contain drop-shadow-sm" 
-                      />
-                    ) : (
-                      <div className="w-14 h-14 rounded-full bg-pink-100"></div>
-                    )}
-                  </div>
-
-                  {/* Service Title */}
-                  <h3 className="text-xs font-bold text-[#0A192F] font-['Montserrat',sans-serif] leading-tight w-full px-1 mb-1">
-                    {item.title}
-                  </h3>
-
-                  {/* Mobile Tap Reveal Description */}
-                  <div className={`grid transition-all duration-300 ease-in-out w-full ${
-                    isSelected ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                  }`}>
-                    <div className="overflow-hidden">
-                      <p className="text-[10px] text-gray-600 leading-tight px-0.5 pt-1">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Desktop & Tablet View: Grid Layout with Hover Effect */}
-        <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8 justify-items-center">
+        <div className="gyn-services-grid">
           {data.items.map((item, index) => {
-            const isSixthItem = index === 5;
+            const isSelected = mobileSelected === index;
 
             return (
-              <div 
-                key={index} 
-                className={`group flex flex-col items-center text-center cursor-pointer w-full p-4 rounded-2xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:border hover:border-pink-100 hover:scale-105 hover:z-10 ${
-                  isSixthItem ? 'lg:col-start-2' : ''
+              <div
+                key={index}
+                role="button"
+                tabIndex={0}
+                onClick={() => handleMobileTap(index)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleMobileTap(index);
+                  }
+                }}
+                className={`gyn-service-card group relative flex h-full min-w-0 w-full cursor-pointer flex-col items-center p-3 text-center sm:p-5 sm:hover:z-20 ${
+                  isSelected ? "is-selected" : ""
                 }`}
               >
-                {/* Icon Container */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform duration-300">
-                  {item.icon ? (
-                    <img 
-                      src={item.icon} 
-                      alt={item.title} 
-                      className="w-full h-full object-contain drop-shadow-sm" 
-                    />
-                  ) : (
-                    <div className="w-16 h-16 rounded-full bg-pink-100"></div>
-                  )}
-                </div>
-
-                {/* Service Title */}
-                <h3 className="text-xs sm:text-sm font-bold text-[#0A192F] font-['Montserrat',sans-serif] leading-snug max-w-[140px] mb-1">
-                  {item.title}
-                </h3>
-
-                {/* Desktop Hover Reveal Description */}
-                <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-300 ease-in-out w-full">
-                  <div className="overflow-hidden">
-                    <p className="text-xs text-gray-600 leading-tight px-1 pt-1.5">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
+                <ServiceCardBody item={item} tapExpanded={isSelected} />
               </div>
             );
           })}
         </div>
-
       </div>
-
-      {/* Tailwind Custom Animation CSS */}
-      <style jsx global>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-marquee {
-          display: flex;
-          width: max-content;
-          animation: marquee 22s linear infinite;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }

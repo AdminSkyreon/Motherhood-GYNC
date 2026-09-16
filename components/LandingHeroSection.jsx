@@ -1,97 +1,112 @@
-export default function LandingHeroSection({ banner, site, booking }) {
+import { assetPath } from "@/lib/assetPath";
+import BookingFormCard from "@/components/BookingFormCard";
+import BookingThankYouCard from "@/components/BookingThankYouCard";
+import { getHospitalHomePath } from "@/lib/bookingPaths";
+
+/** Shared hero typography (headline lines + form body) */
+const heroLineClass =
+  "block text-[26px] font-extrabold leading-[1.22] sm:text-[30px] sm:leading-[1.2] lg:text-[34px] lg:leading-[1.18] xl:text-[36px]";
+
+function HeroHeadline({ banner }) {
+  const lines = banner?.taglineLines?.length
+    ? banner.taglineLines
+    : ["Expert Gynaecology", "Care for Every Stage of a Woman's Life"];
+  const emphasis = banner?.taglineEmphasisWord || "Woman's Life";
+
   return (
-    <section className="relative pt-0 pb-6 lg:py-24 overflow-hidden">
-      
-      {/* 1. Desktop Only: Absolute Background Image */}
-      {site.assets?.heroImageSrc && (
-        <div className="hidden lg:flex absolute inset-0 justify-center items-center pointer-events-none overflow-hidden">
-          <img 
-            src={site.assets.heroImageSrc} 
-            alt="Gynaecology Consultation" 
-            className="w-full h-full object-cover object-center"
-          />
+    <h1 className="mx-auto flex w-full max-w-full flex-col gap-1.5 text-center font-extrabold tracking-tight text-mh-blue font-['Montserrat',sans-serif] [text-shadow:0_1px_10px_rgba(255,255,255,0.85)] lg:mx-0 lg:max-w-none lg:text-left lg:[text-shadow:0_1px_14px_rgba(255,255,255,0.9)]">
+      {lines.map((line, index) => {
+        const hasEmphasis = emphasis && line.includes(emphasis);
+        const [before, after] = hasEmphasis ? line.split(emphasis) : [line, ""];
+
+        return (
+          <span key={index} className={heroLineClass}>
+            {before}
+            {hasEmphasis ? (
+              <span className="italic text-mh-pink">{emphasis}</span>
+            ) : null}
+            {after}
+          </span>
+        );
+      })}
+    </h1>
+  );
+}
+
+export default function LandingHeroSection({ banner, site, booking, thankYouMode = false, backHref = "/" }) {
+  const form = booking?.bookingForm || {};
+  const thankYou = booking?.thankYou || {};
+  const homeHref = backHref || getHospitalHomePath(site?.slug);
+  const formTitle = form.title || "Book Your Gynaecology Consultation";
+  const subtext = form.subtext;
+  const languages = form.languages || [];
+  const ctaLabel = form.ctaLabel || "Book My Consultation";
+  const privacyText =
+    form.privacyText ||
+    "Your information stays private and is only used for appointment assistance.";
+
+  const heroSrc = site.assets?.heroImageSrc;
+  const heroImgClass =
+    "h-full w-full scale-[1.12] object-cover object-[center_32%] sm:scale-[1.16] lg:scale-[1.2]";
+
+  const formCard = thankYouMode ? (
+    <BookingThankYouCard thankYou={thankYou} backHref={homeHref} />
+  ) : (
+    <BookingFormCard
+      hospitalSlug={site?.slug}
+      formTitle={formTitle}
+      subtext={subtext}
+      languages={languages}
+      ctaLabel={ctaLabel}
+      privacyText={privacyText}
+      thankYou={thankYou}
+      backHref={homeHref}
+    />
+  );
+
+  return (
+    <section id="booking" className="hero-banner-bg relative overflow-hidden lg:min-h-[440px]">
+      {heroSrc ? (
+        <div
+          className="pointer-events-none absolute inset-0 z-0 hidden lg:block"
+          aria-hidden="true"
+        >
+          <img src={assetPath(heroSrc)} alt="" className={heroImgClass} />
+          <div className="absolute inset-y-0 left-0 w-[48%] max-w-lg bg-gradient-to-r from-white/45 to-transparent" />
         </div>
-      )}
+      ) : null}
 
-      {/* 2. Mobile Only: Full-Width Image at the very top (Navbar ke sath gap hatane ke liye pt-0) */}
-      {site.assets?.heroImageSrc && (
-        <div className="block lg:hidden w-full mb-4">
-          <img 
-            src={site.assets.heroImageSrc} 
-            alt="Gynaecology Consultation" 
-            className="w-full h-auto object-cover"
-          />
-        </div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-4 lg:gap-8 items-center">
-          
-          {/* 3. Text / Tagline */}
-          <div className="lg:col-span-6 max-w-xl lg:pl-4 text-center lg:text-left mb-2 lg:mb-0">
-            <h1 className="text-[26px] sm:text-[28px] lg:text-[34px] font-extrabold font-['Montserrat',sans-serif] leading-tight">
-              <span style={{ color: '#0057A4' }}>Expert Gynaecology</span> <br className="hidden sm:inline" />
-              <span style={{ color: '#0057A4' }}>Care for Every Stage of a</span> <br className="hidden sm:inline" />
-              <span style={{ color: '#DB5070' }}>Woman's Life</span>
-            </h1>
-          </div>
-
-          {/* Empty Middle Space on Desktop */}
-          <div className="hidden lg:block lg:col-span-2"></div>
-
-          {/* 4. Booking Form Box */}
-          <div className="lg:col-span-4 ml-auto w-full max-w-[380px] bg-white p-5 rounded-2xl shadow-xl border border-gray-100 mt-2 lg:mt-0">
-            <h3 className="text-xl font-extrabold font-['Montserrat',sans-serif] leading-tight mb-4" style={{ color: '#0057A4' }}>
-              Book Your Gynaecology <br />
-              Consultation
-            </h3>
-            
-            <form className="space-y-3">
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Full Name" 
-                  className="w-full px-3.5 py-2.5 border-[1px] border-pink-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#DB5070] placeholder-gray-400 font-['Montserrat',sans-serif]" 
-                  style={{ backgroundColor: '#FFF9FB', color: '#231F20', fontSize: '16px' }}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-2 pt-0 sm:px-6 lg:px-12 lg:py-6">
+        <div className="flex flex-col gap-0 lg:grid lg:grid-cols-12 lg:items-center lg:gap-6">
+          {heroSrc ? (
+            <div className="relative order-1 -mx-4 sm:-mx-6 lg:hidden">
+              <div className="relative h-[340px] overflow-hidden sm:h-[380px]">
+                <img
+                  src={assetPath(heroSrc)}
+                  alt=""
+                  className={`${heroImgClass} scale-[1.18] object-[center_26%] sm:scale-[1.2] sm:object-[center_30%]`}
+                />
+                <div
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-[#fafafa]/65 to-[var(--hero-wall)] sm:h-52"
+                  aria-hidden="true"
                 />
               </div>
-              <div>
-                <input 
-                  type="tel" 
-                  placeholder="Mobile Number" 
-                  className="w-full px-3.5 py-2.5 border-[1px] border-pink-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#DB5070] placeholder-gray-400 font-['Montserrat',sans-serif]" 
-                  style={{ backgroundColor: '#FFF9FB', color: '#231F20', fontSize: '16px' }}
-                />
-              </div>
-              <div className="relative">
-                <select 
-                  className="w-full px-3.5 py-2.5 border-[1px] border-pink-200/80 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#DB5070] font-['Montserrat',sans-serif] appearance-none cursor-pointer"
-                  style={{ 
-                    backgroundColor: '#FFF9FB', 
-                    color: '#231F20', 
-                    fontSize: '16px',
-                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DB5070'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 12px center',
-                    backgroundSize: '20px'
-                  }}
-                >
-                  <option value="" className="text-gray-400">Preferred Language</option>
-                  {booking.bookingForm.languages?.map((lang, idx) => (
-                    <option key={idx} value={lang}>{lang}</option>
-                  ))}
-                </select>
-              </div>
-              <button 
-                type="submit" 
-                className="w-full text-white py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition font-['Montserrat',sans-serif]"
-                style={{ backgroundColor: '#DB5070' }}
-              >
-                Request a Callback →
-              </button>
-            </form>
+            </div>
+          ) : null}
+
+          <div
+            className={`relative order-2 z-10 w-full px-2 sm:px-3 lg:order-none lg:col-span-5 lg:px-0 lg:py-2 lg:pr-4 ${
+              heroSrc ? "-mt-[5.75rem] sm:-mt-28 lg:mt-0" : ""
+            }`}
+          >
+            <HeroHeadline banner={banner} />
           </div>
 
+          <div className="hidden lg:order-none lg:col-span-3 lg:block" aria-hidden="true" />
+
+          <div className="relative z-20 order-3 mt-4 w-full lg:order-none lg:col-span-4 lg:mt-0 lg:flex lg:justify-end">
+            {formCard}
+          </div>
         </div>
       </div>
     </section>

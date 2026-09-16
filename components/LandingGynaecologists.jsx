@@ -1,107 +1,238 @@
-'use client';
+"use client";
 
-export default function LandingGynaecologists({ data }) {
-  if (!data || !data.enabled || !data.items) return null;
+import { useCallback, useEffect, useRef } from "react";
+import { assetPath } from "@/lib/assetPath";
 
-  // Duplicate items for seamless infinite marquee loop on all screens
-  const infiniteItems = [...data.items, ...data.items];
+const PAUSE_MS = 7000;
+const AUTO_SCROLL_PX_PER_SEC = 32;
+const DRAG_THRESHOLD_PX = 8;
+/** Ignore scroll events this long after we moved scrollLeft (avoids treating auto-scroll as user scroll). */
+const AUTO_SCROLL_IGNORE_MS = 80;
+
+function scrollToBooking() {
+  const bookingSection = document.getElementById("booking");
+  if (bookingSection) {
+    bookingSection.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function DoctorCard({ doctor, onCardInteract }) {
+  return (
+    <article
+      className="doctor-card-mh"
+      onPointerDown={() => onCardInteract?.()}
+    >
+      <div className="doctor-avatar-ring">
+        <div className="doctor-avatar-inner">
+          <div className="doctor-avatar-fallback">{doctor.initials}</div>
+          {doctor.image?.trim() ? (
+            <img
+              src={assetPath(doctor.image)}
+              alt=""
+              draggable={false}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+              className="doctor-avatar-photo"
+            />
+          ) : null}
+        </div>
+      </div>
+
+      <h3 className="doctor-card-mh__name">{doctor.name}</h3>
+      <p className="doctor-card-mh__qual">{doctor.qualification}</p>
+      <p className="doctor-card-mh__role">{doctor.designation}</p>
+
+      <p className="doctor-card-mh__location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        <span>{doctor.location}</span>
+      </p>
+
+      <button
+        type="button"
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation();
+          onCardInteract?.();
+          scrollToBooking();
+        }}
+        className="doctor-card-mh__cta"
+      >
+        Book Appointment
+      </button>
+    </article>
+  );
+}
+
+function DoctorsScrollCarousel({ items, enableAutoScroll }) {
+  const scrollRef = useRef(null);
+  const pausedRef = useRef(false);
+  const resumeTimerRef = useRef(null);
+  const rafRef = useRef(null);
+  const lastFrameRef = useRef(0);
+  const lastAutoScrollAtRef = useRef(0);
+  const visibleRef = useRef(true);
+  const dragStartRef = useRef(null);
+
+  const pauseAutoScroll = useCallback(() => {
+    if (!enableAutoScroll) return;
+    pausedRef.current = true;
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+      resumeTimerRef.current = null;
+    }, PAUSE_MS);
+  }, [enableAutoScroll]);
+
+  const onCardInteract = useCallback(() => {
+    pauseAutoScroll();
+  }, [pauseAutoScroll]);
+
+  useEffect(() => {
+    if (!enableAutoScroll) return;
+
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 },
+    );
+    io.observe(el);
+
+    const onScroll = () => {
+      if (performance.now() - lastAutoScrollAtRef.current < AUTO_SCROLL_IGNORE_MS) {
+        return;
+      }
+      pauseAutoScroll();
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+
+    lastFrameRef.current = performance.now();
+
+    const tick = (now) => {
+      const deltaMs = Math.min(now - lastFrameRef.current, 48);
+      lastFrameRef.current = now;
+
+      if (visibleRef.current && !pausedRef.current && el.scrollWidth > el.clientWidth + 2) {
+        lastAutoScrollAtRef.current = performance.now();
+        el.scrollLeft += (AUTO_SCROLL_PX_PER_SEC * deltaMs) / 1000;
+        const half = el.scrollWidth / 2;
+        if (half > 0 && el.scrollLeft >= half - 2) {
+          el.scrollLeft -= half;
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      io.disconnect();
+      el.removeEventListener("scroll", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+  }, [enableAutoScroll, pauseAutoScroll]);
+
+  const onPointerDown = (e) => {
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const onPointerMove = (e) => {
+    const start = dragStartRef.current;
+    if (!start) return;
+    const dx = Math.abs(e.clientX - start.x);
+    const dy = Math.abs(e.clientY - start.y);
+    if (dx >= DRAG_THRESHOLD_PX && dx > dy) {
+      pauseAutoScroll();
+      dragStartRef.current = null;
+    }
+  };
+
+  const onPointerUp = () => {
+    dragStartRef.current = null;
+  };
+
+  const displayItems = enableAutoScroll ? [...items, ...items] : items;
 
   return (
-    <section className="py-12 md:py-16 bg-[#F4F8FC]">
-      <div className="w-full">
-        
-        {/* Section Heading */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-10 md:mb-14 font-['Montserrat',sans-serif] px-4">
+    <div className="doctors-scroll-wrap">
+      <div
+        ref={scrollRef}
+        className={`doctors-scroll-outer${enableAutoScroll ? " doctors-scroll-outer--auto" : ""}`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        role="region"
+        aria-label="Doctors carousel"
+        tabIndex={0}
+      >
+        <div className="doctors-scroll-track">
+          {displayItems.map((doctor, index) => (
+            <DoctorCard
+              key={`${doctor.name}-${index}`}
+              doctor={doctor}
+              onCardInteract={onCardInteract}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DoctorsStaticRow({ items }) {
+  return (
+    <div className="doctors-static-row">
+      {items.map((doctor, index) => (
+        <DoctorCard key={`${doctor.name}-${index}`} doctor={doctor} />
+      ))}
+    </div>
+  );
+}
+
+export default function LandingGynaecologists({ data }) {
+  if (!data || !data.enabled || !data.items?.length) return null;
+
+  const items = data.items;
+  const count = items.length;
+  const mobileCarousel = count > 1;
+  const desktopCarousel = count > 3;
+  const mobileAutoScroll = count > 1;
+  const desktopAutoScroll = count > 3;
+
+  return (
+    <section className="gynaecologists-section py-5 md:py-7">
+      <div className="gynaecologists-section__inner mx-auto max-w-[1160px]">
+        <h2 className="section-title-mh section-title-mh--ink px-4">
           {data.title}
         </h2>
 
-        {/* Gynaecologists Infinite Auto-Scroll Carousel */}
-        <div className="w-full overflow-hidden relative flex py-4">
-          <div className="flex gap-4 sm:gap-5 animate-marquee whitespace-nowrap pl-4">
-            {infiniteItems.map((doctor, index) => (
-              <div 
-                key={index} 
-                className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex flex-col items-center text-center w-[240px] sm:w-[250px] flex-shrink-0 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300"
-              >
-                {/* Doctor Avatar / Image Container */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full mb-4 flex items-center justify-center p-1 bg-gradient-to-b from-pink-500 to-blue-600 shadow-inner flex-shrink-0">
-                  <div className="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden relative">
-                    
-                    {/* Fallback Initials Layer */}
-                    <div className="w-full h-full rounded-full bg-gradient-to-br from-pink-500 to-blue-900 flex items-center justify-center text-white font-extrabold text-xl sm:text-2xl tracking-wider shadow-inner absolute inset-0 z-0">
-                      {doctor.initials}
-                    </div>
-
-                    {/* Image Layer on Top */}
-                    {doctor.image && doctor.image.trim() !== '' && (
-                      <img 
-                        src={doctor.image} 
-                        alt="" 
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                        className="w-full h-full object-cover absolute inset-0 z-10 bg-white"
-                      />
-                    )}
-
-                  </div>
-                </div>
-
-                {/* Doctor Name */}
-                <h3 className="text-base font-bold text-[#0A192F] font-['Montserrat',sans-serif] mb-1">
-                  {doctor.name}
-                </h3>
-
-                {/* Doctor Qualification */}
-                <p className="text-xs text-gray-500 font-medium mb-2 min-h-[32px]">
-                  {doctor.qualification}
-                </p>
-
-                {/* Doctor Designation */}
-                <p className="text-xs font-semibold text-gray-700 mb-4 min-h-[36px]">
-                  {doctor.designation}
-                </p>
-
-                {/* Location Badge */}
-                <div className="flex items-center justify-center bg-pink-50 border border-pink-100 rounded-full px-3 py-1 mb-5">
-                  <span className="text-xs mr-1">📍</span>
-                  <span className="text-xs font-medium text-gray-700">{doctor.location}</span>
-                </div>
-
-                {/* Book Appointment Button */}
-                <button 
-                  onClick={() => {
-                    const bookingSection = document.getElementById('booking');
-                    if (bookingSection) {
-                      bookingSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="mt-auto w-full py-2.5 px-4 rounded-full text-white text-xs font-bold bg-gradient-to-r from-pink-600 to-blue-900 shadow-md hover:opacity-95 transition-opacity"
-                >
-                  Book Appointment
-                </button>
-              </div>
-            ))}
-          </div>
+        <div className="md:hidden">
+          {mobileCarousel ? (
+            <DoctorsScrollCarousel items={items} enableAutoScroll={mobileAutoScroll} />
+          ) : (
+            <DoctorsStaticRow items={items} />
+          )}
         </div>
 
+        <div className="hidden md:block">
+          {desktopCarousel ? (
+            <DoctorsScrollCarousel items={items} enableAutoScroll={desktopAutoScroll} />
+          ) : (
+            <DoctorsStaticRow items={items} />
+          )}
+        </div>
       </div>
-
-      {/* Custom CSS for infinite marquee animation */}
-      <style jsx>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          display: flex;
-          width: max-content;
-          animation: marquee 25s linear infinite;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }
