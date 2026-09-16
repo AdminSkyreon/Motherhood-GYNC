@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { assetPath } from "@/lib/assetPath";
 
 function cardTone(item, index) {
   if (item.cardColor === "lavender") return "lavender";
@@ -29,7 +30,7 @@ export default function LandingWomanhoodLifecycle({ data }) {
                 {item.icon && (
                   <div className="womanhood-lifecycle-card__icon">
                     <Image
-                      src={item.icon}
+                      src={assetPath(item.icon)}
                       alt=""
                       fill
                       sizes="(max-width: 640px) 52px, (max-width: 1024px) 68px, 84px"

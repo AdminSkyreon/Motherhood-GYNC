@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { assetPath } from "@/lib/assetPath";
 
 export default function LandingWhyChooseUs({ data }) {
   if (!data || !data.enabled) return null;
@@ -39,7 +40,7 @@ export default function LandingWhyChooseUs({ data }) {
                       {item.icon && (
                         <div className="w-9 h-9 max-lg:w-10 max-lg:h-10 sm:w-14 sm:h-14 lg:w-[4.5rem] lg:h-[4.5rem] relative mb-1.5 max-lg:mb-2 lg:mb-4 flex-shrink-0">
                           <Image
-                            src={item.icon}
+                            src={assetPath(item.icon)}
                             alt={item.title}
                             fill
                             className="object-contain"
