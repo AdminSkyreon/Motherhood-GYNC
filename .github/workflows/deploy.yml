@@ -6,7 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-# Pushes the static export to the gh-pages branch (see peaceiris/actions-gh-pages).
 permissions:
   contents: write
 
@@ -15,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,10 +50,25 @@ jobs:
         env:
           PAGES_BASE_PATH: ${{ steps.pages_base.outputs.base_path }}
 
-      - name: Publish static site to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          publish_branch: gh-pages
-          force_orphan: true
+      # This repo's Pages site is built from the default branch root (GitHub's
+      # "pages build & deployment" / README mode). Copy the static export beside
+      # source so index.html wins over README.md. .nojekyll disables Jekyll.
+      - name: Sync static export to repository root
+        run: |
+          cp -R out/. .
+          touch .nojekyll
+
+      - name: Commit and push static site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f .nojekyll
+          for item in $(ls -A out); do
+            git add -f "$item"
+          done
+          if git diff --staged --quiet; then
+            echo "No static files to publish."
+            exit 0
+          fi
+          git commit -m "chore: publish static site for GitHub Pages [skip ci]"
+          git push
