@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { assetPath } from "@/lib/assetPath";
 
 export default function LandingWhyChooseUs({ data }) {
@@ -38,12 +37,11 @@ export default function LandingWhyChooseUs({ data }) {
                   <div className="why-choose-card-face absolute inset-0 w-full h-full flex items-center justify-center text-center p-2.5 max-lg:px-2 lg:p-6 bg-white rounded-[20px] border border-gray-100 [backface-visibility:hidden]">
                     <div className="why-choose-card-face__inner flex w-full max-h-full flex-col items-center justify-center">
                       {item.icon && (
-                        <div className="w-9 h-9 max-lg:w-10 max-lg:h-10 sm:w-14 sm:h-14 lg:w-[4.5rem] lg:h-[4.5rem] relative mb-1.5 max-lg:mb-2 lg:mb-4 flex-shrink-0">
-                          <Image
+                        <div className="w-9 h-9 max-lg:w-10 max-lg:h-10 sm:w-14 sm:h-14 lg:w-[4.5rem] lg:h-[4.5rem] mb-1.5 max-lg:mb-2 lg:mb-4 flex-shrink-0">
+                          <img
                             src={assetPath(item.icon)}
-                            alt={item.title}
-                            fill
-                            className="object-contain"
+                            alt=""
+                            className="h-full w-full object-contain"
                           />
                         </div>
                       )}

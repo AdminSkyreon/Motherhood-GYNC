@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { assetPath } from "@/lib/assetPath";
 
 function cardTone(item, index) {
@@ -29,12 +28,10 @@ export default function LandingWomanhoodLifecycle({ data }) {
               >
                 {item.icon && (
                   <div className="womanhood-lifecycle-card__icon">
-                    <Image
+                    <img
                       src={assetPath(item.icon)}
                       alt=""
-                      fill
-                      sizes="(max-width: 640px) 52px, (max-width: 1024px) 68px, 84px"
-                      className="object-contain p-1.5 sm:p-2"
+                      className="h-full w-full object-contain p-1.5 sm:p-2"
                     />
                   </div>
                 )}
