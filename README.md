@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Motherhood-GYNC
+
+Hospital gynaecology landing pages (Next.js static export).
+
+**Live site:** [https://adminskyreon.github.io/Motherhood-GYNC/](https://adminskyreon.github.io/Motherhood-GYNC/)
+
+**GitHub Pages must use the `gh-pages` branch (folder `/`), not `main`.**  
+Pushes to `main` run [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds `out/` and updates `gh-pages`. If you see this README on the live URL, change **Settings → Pages → Build and deployment → Branch** to **`gh-pages`** / **root**, then wait a minute and hard-refresh.
+
+---
+
+## Development
+
+This is a [Next.js](https://nextjs.org) app.
 
 ## Getting Started
 
