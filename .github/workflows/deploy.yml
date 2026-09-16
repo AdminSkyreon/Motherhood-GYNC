@@ -25,15 +25,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Setup Pages
-        id: setup_pages
-        uses: actions/configure-pages@v5
+      # Project Pages URL: https://<user>.github.io/<repo>/
+      # configure-pages requires Pages to already be enabled in repo Settings.
+      - name: Set Pages base path
+        id: pages_base
+        run: |
+          BASE_PATH="/${{ github.event.repository.name }}"
+          echo "base_path=${BASE_PATH}" >> "$GITHUB_OUTPUT"
+          echo "Pages base path: ${BASE_PATH}"
 
       - name: Restore Next.js cache
         uses: actions/cache@v4
@@ -46,7 +51,7 @@ jobs:
       - name: Build with Next.js
         run: npm run build
         env:
-          PAGES_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
+          PAGES_BASE_PATH: ${{ steps.pages_base.outputs.base_path }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
