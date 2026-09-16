@@ -1,0 +1,411 @@
+{
+  "sections": {
+    "site": {
+      "slug": "chennai",
+      "hospitalName": "Motherhood Hospital Chennai",
+      "hospitalShortName": "Chennai",
+      "regionLabel": "Chennai",
+      "address": "Motherhood Women and Children's Hospital, Alwarpet, Chennai, Tamil Nadu",
+      "phone": {
+        "display": "080 695 49251",
+        "tel": "08069549251"
+      },
+      "seo": {
+        "title": "Best Gynaecology & Maternity Hospital in Chennai | Motherhood",
+        "description": "Expert gynaecology care for every stage of a woman's life at Motherhood Hospital Chennai."
+      },
+      "assets": {
+        "logoSrc": "/motherhood_logo.png",
+        "heroImageSrc": "/hero_main.jpg"
+      }
+    },
+    "banner": {
+      "taglineLines": [
+        "Expert Gynaecology Care for Every Stage of a",
+        "Woman's Life"
+      ],
+      "taglineEmphasisWord": "Woman's Life"
+    },
+    "booking": {
+      "bookingForm": {
+        "title": "Book Your Gynaecology Consultation",
+        "subtext": "Our care team will help with packages, doctors & next steps.",
+        "languages": [
+          "English",
+          "Hindi",
+          "Tamil",
+          "Kannada",
+          "Telugu"
+        ]
+      },
+      "lead": {
+        "hospitalId": "chennai",
+        "source": "landing-page-chennai",
+        "unitnameC": "Motherhood_HospitalChennai",
+        "formEnquiryType": "Request a Callback"
+      }
+    },
+    "featuresBar": [
+      {
+        "icon": "/icons/trusted.png",
+        "title": "Trusted by",
+        "subtitle": "1M+ Women"
+      },
+      {
+        "icon": "/icons/location.png",
+        "title": "25+",
+        "subtitle": "Hospital Locations"
+      },
+      {
+        "icon": "/icons/emergency.png",
+        "title": "24/7",
+        "subtitle": "Emergency Care"
+      },
+      {
+        "icon": "/icons/nabh.png",
+        "title": "NABH",
+        "subtitle": "Accredited Hospital"
+      }
+    ],
+    "symptoms": {
+      "enabled": true,
+      "title": "What are you experiencing?",
+      "items": [
+        {
+          "icon": "/icons/period.png",
+          "title": "Menstrual & Period Problems",
+          "bullets": [
+            "Irregular periods",
+            "Heavy bleeding",
+            "Painful periods",
+            "Spotting & more"
+          ]
+        },
+        {
+          "icon": "/icons/pcos.png",
+          "title": "PCOS / Hormonal Concerns",
+          "bullets": [
+            "Weight gain",
+            "Acne & hair growth",
+            "Delayed cycles",
+            "Hormonal imbalance"
+          ]
+        },
+        {
+          "icon": "/icons/pelvic.png",
+          "title": "Pelvic & Abdominal Problems",
+          "bullets": [
+            "Lower belly pain",
+            "Chronic pelvic ache",
+            "Cramps & discomfort",
+            "Swelling & bloating"
+          ]
+        },
+        {
+          "icon": "/icons/vaginal.png",
+          "title": "Vaginal & Intimate Health",
+          "bullets": [
+            "Infections & itching",
+            "Unusual discharge",
+            "Odour & irritation",
+            "Intimate wellness"
+          ]
+        },
+        {
+          "icon": "/icons/preventive.png",
+          "title": "Women’s Preventive Health",
+          "bullets": [
+            "Full body checkup",
+            "Cancer screening",
+            "Bone & heart care",
+            "Vaccinations"
+          ]
+        },
+        {
+          "icon": "/icons/menopause.png",
+          "title": "Perimenopause & Menopause",
+          "bullets": [
+            "Hot flashes",
+            "Mood swings",
+            "Night sweats",
+            "Irregular transition"
+          ]
+        }
+      ]
+    },
+    "gynaecologyServices": {
+      "enabled": true,
+      "title": "Our Gynaecology Services",
+      "items": [
+        {
+          "icon": "/icons/general-gynae.png",
+          "title": "General Gynaecology",
+          "description": "Consultation for common women's health concerns."
+        },
+        {
+          "icon": "/icons/menstrual-disorders.png",
+          "title": "Menstrual Disorders",
+          "description": "Expert care for irregular or painful periods."
+        },
+        {
+          "icon": "/icons/pcos-care.png",
+          "title": "PCOS / PCOD Care",
+          "description": "Comprehensive lifestyle and hormonal management."
+        },
+        {
+          "icon": "/icons/fibroids.png",
+          "title": "Fibroids & Ovarian Cysts",
+          "description": "Advanced diagnosis and treatment options."
+        },
+        {
+          "icon": "/icons/endometriosis.png",
+          "title": "Endometriosis Care",
+          "description": "Specialized pain relief and long-term care."
+        },
+        {
+          "icon": "/icons/vaginal-urinary.png",
+          "title": "Vaginal & Urinary Concerns",
+          "description": "Safe and effective treatment for infections."
+        },
+        {
+          "icon": "/icons/menopause-care.png",
+          "title": "Menopause Care",
+          "description": "Support and management through transition phases."
+        },
+        {
+          "icon": "/icons/preventive-gynae.png",
+          "title": "Preventive Gynaecology",
+          "description": "Routine screenings and wellness checkups."
+        }
+      ]
+    },
+    "gynaecologists": {
+      "enabled": true,
+      "title": "Meet Our Gynaecologists",
+      "items": [
+        {
+          "initials": "PS",
+          "name": "Dr. Premalatha S.",
+          "qualification": "MD, DGO, FRCOG",
+          "designation": "Senior Obstetrician & Gynaecologist",
+          "location": "Alwarpet",
+          "image": "/doctors/chennai/premalatha.jpg"
+        },
+        {
+          "initials": "KR",
+          "name": "Dr. Kavitha R.",
+          "qualification": "MD, DNB, FNB (MFM)",
+          "designation": "Maternal-Fetal Medicine Specialist",
+          "location": "Alwarpet",
+          "image": "/doctors/chennai/kavitha.jpg"
+        },
+        {
+          "initials": "AK",
+          "name": "Dr. Anand Kumar",
+          "qualification": "MD, DM (Neonatology)",
+          "designation": "Senior Neonatologist",
+          "location": "Alwarpet",
+          "image": "/doctors/chennai/anand.jpg"
+        },
+        {
+          "initials": "LV",
+          "name": "Dr. Lakshmi V.",
+          "qualification": "MD, DNB, MRCOG",
+          "designation": "Consultant Obstetrician",
+          "location": "Alwarpet",
+          "image": "/doctors/chennai/lakshmi.jpg"
+        },
+        {
+          "initials": "RM",
+          "name": "Dr. Rajesh M.",
+          "qualification": "MD, DA, PDCC (Pain)",
+          "designation": "Anaesthesiologist & Pain Specialist",
+          "location": "Alwarpet",
+          "image": "/doctors/chennai/rajesh.jpg"
+        }
+      ]
+    },
+    "whyChooseUs": {
+      "enabled": true,
+      "title": "Why Women Choose Us",
+      "items": [
+        {
+          "icon": "/icons/experienced-gynaecologists.png",
+          "title": "Experienced Gynaecologists",
+          "description": "Our team of highly skilled and compassionate experts bring years of experience in women's health, ensuring you receive the best care possible."
+        },
+        {
+          "icon": "/icons/advanced-technology.png",
+          "title": "Advanced Technology",
+          "description": "We utilize state-of-the-art medical technology and equipment to provide precise diagnostics and advanced treatments."
+        },
+        {
+          "icon": "/icons/personalised-care.png",
+          "title": "Personalised Care",
+          "description": "Every patient receives a customized treatment plan tailored specifically to their unique health needs and comfort."
+        },
+        {
+          "icon": "/icons/comprehensive-services.png",
+          "title": "Comprehensive Services",
+          "description": "From routine checkups to specialized care, we offer a complete umbrella of healthcare services under one roof."
+        },
+        {
+          "icon": "/icons/safe-environment.png",
+          "title": "Safe & Comfortable Environment",
+          "description": "A warm, welcoming, and strictly sanitized space designed to keep you relaxed and secure during your visit."
+        },
+        {
+          "icon": "/icons/convenient-appointments.png",
+          "title": "Convenient Appointments",
+          "description": "Hassle-free booking with minimal wait times, flexible scheduling, and prompt assistance whenever you need it."
+        }
+      ]
+    },
+    "womanhoodLifecycle": {
+      "enabled": true,
+      "title": "Gynaecology Care Across Every Stage of Womanhood",
+      "items": [
+        {
+          "icon": "/icons/teen-women.png",
+          "title": "Teen & Young Women",
+          "description": "Menstrual problems, PCOS, hormonal concerns",
+          "cardColor": "pink"
+        },
+        {
+          "icon": "/icons/reproductive-years.png",
+          "title": "Reproductive Years",
+          "description": "Period disorders, fibroids, endometriosis, ovarian cysts",
+          "cardColor": "lavender"
+        },
+        {
+          "icon": "/icons/midlife.png",
+          "title": "Midlife",
+          "description": "Hormonal changes, abnormal bleeding, health monitoring",
+          "cardColor": "pink"
+        },
+        {
+          "icon": "/icons/menopause1.png",
+          "title": "Menopause",
+          "description": "Menopause symptoms, bone health, heart health, wellness care",
+          "cardColor": "lavender"
+        }
+      ]
+    },
+    "faqs": {
+      "enabled": true,
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "When should I consult a gynaecologist?",
+          "answer": "You should consult a gynaecologist if you experience irregular periods, severe pelvic pain, unusual discharge, or as part of your routine annual wellness screening."
+        },
+        {
+          "question": "What are common symptoms of ovarian cysts?",
+          "answer": "Common symptoms include pelvic pain during periods, abdominal bloating or swelling, and pain during intercourse."
+        },
+        {
+          "question": "What causes irregular periods?",
+          "answer": "Irregular periods can be caused by hormonal imbalances, PCOS, thyroid disorders, extreme stress, or sudden weight fluctuations."
+        },
+        {
+          "question": "When should pelvic pain be checked?",
+          "answer": "Pelvic pain that is severe, persistent, or interferes with your daily activities should be evaluated by a gynaecologist immediately."
+        },
+        {
+          "question": "When should heavy bleeding be evaluated?",
+          "answer": "If you soak through one or more sanitary pads every hour for several consecutive hours, or experience periods lasting longer than 7 days, you should consult a doctor."
+        },
+        {
+          "question": "How often should women have a gynaecology check-up?",
+          "answer": "It is recommended for women to visit a gynaecologist at least once a year for a routine preventive health screening."
+        },
+        {
+          "question": "Can PCOS cause irregular periods?",
+          "answer": "Yes, Polycystic Ovary Syndrome (PCOS) is one of the most common causes of irregular or missed menstrual cycles."
+        },
+        {
+          "question": "When should I consult a doctor about menopause symptoms?",
+          "answer": "You should consult a specialist if severe hot flashes, mood swings, or night sweats start disrupting your daily sleep and quality of life."
+        }
+      ]
+    },
+    "reviews": {
+      "enabled": true,
+      "title": "What mothers say about Motherhood",
+      "google": {
+        "rating": 4.9,
+        "reviewCount": "1,840"
+      },
+      "practo": {
+        "rating": 5.0,
+        "reviewCount": "920"
+      },
+      "items": [
+        {
+          "name": "Priya R",
+          "subtitle": "New mother · Chennai",
+          "rating": 5,
+          "review": "The doctors explained each stage clearly and the hospital team made us feel prepared instead of overwhelmed."
+        },
+        {
+          "name": "Divya S",
+          "subtitle": "First pregnancy",
+          "rating": 5,
+          "review": "Very reassuring labor support, clean rooms, and clear communication with our family throughout the admission process."
+        },
+        {
+          "name": "Karthika M",
+          "subtitle": "Alwarpet",
+          "rating": 5,
+          "review": "We chose Motherhood because the maternity focus felt stronger than the other hospitals we visited, and it showed."
+        },
+        {
+          "name": "Anusha V",
+          "subtitle": "Twins delivery",
+          "rating": 5,
+          "review": "Good coordination between doctors, nursing, and newborn care. That continuity made a huge difference for us."
+        },
+        {
+          "name": "Meena T",
+          "subtitle": "High-risk pregnancy",
+          "rating": 5,
+          "review": "The high-risk team handled our case with such skill and professionalism. Having my baby and I are both healthy is that is everything to us."
+        }
+      ]
+    },
+    "location": {
+      "enabled": true,
+      "sectionTitle": "Motherhood Hospital Chennai",
+      "cardTitle": "Motherhood Hospital Chennai",
+      "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.06960250207!2d80.2511221!3d13.0312396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267b4336e6a1d%3A0xb46e591bbe7831e1!2sMotherhood%20Hospital%20-%20Best%20Maternity%2C%20Child%20Care%20%26%20Pregnancy%20Hospital%20in%20Chennai%20%7C%20Gynecologist%2C%20Pediatricians!5e0!3m2!1sen!2sin",
+      "highlights": [
+        {
+          "icon": "📍",
+          "text": "Motherhood Women and Children's Hospital, Alwarpet, Chennai, Tamil Nadu"
+        },
+        {
+          "icon": "⏱️",
+          "text": "Open 24 hours — labor, emergency, and delivery support always available"
+        },
+        {
+          "icon": "👩‍⚕️",
+          "text": "Experienced maternity specialists with NICU level III backup on-site"
+        },
+        {
+          "icon": "📞",
+          "text": "Call 080 695 49251 for consultation booking or package queries"
+        },
+        {
+          "icon": "⭐",
+          "text": "4.8 Google (1,956 reviews) · 4.9 Practo (1,956 reviews)"
+        }
+      ]
+    },
+    "footer": {
+      "enabled": true,
+      "copyrightText": "© 2026 Motherhood Hospital Chennai · Alwarpet · 080 695 49251",
+      "privacyPolicyText": "Privacy Policy",
+      "termsConditionsText": "Terms & Conditions"
+    }
+  }
+}
