@@ -19,6 +19,7 @@
     },
     "banner": {
       "enabled": true,
+      "subtitle": "Motherhood Hospital City Name",
       "taglineLines": [
         "Advanced Healthcare",
         "Compassionate Experts"
