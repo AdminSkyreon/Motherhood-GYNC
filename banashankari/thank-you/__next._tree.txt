@@ -1,4 +1,4 @@
-:HL["/Motherhood-GYNC/_next/static/chunks/2upq5rd4tdeyi.css","style"]
+:HL["/Motherhood-GYNC/_next/static/chunks/1onc-eqig73fi.css","style"]
 :HL["/Motherhood-GYNC/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Motherhood-GYNC/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/Motherhood-GYNC/motherhood_logo.png","image"]
@@ -7,4 +7,4 @@
 :HL["/Motherhood-GYNC/icons/reproductive-years.png","image"]
 :HL["/Motherhood-GYNC/icons/midlife.png","image"]
 :HL["/Motherhood-GYNC/icons/menopause1.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"slug","param":{"type":"d","key":"banashankari","siblings":["api","thank-you"]},"prefetchHints":4192,"slots":{"children":{"name":"thank-you","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"dERdGUsMMb-poA4QW_P5C"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"slug","param":{"type":"d","key":"banashankari","siblings":["api","thank-you"]},"prefetchHints":4192,"slots":{"children":{"name":"thank-you","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"Wq_AG1ORRJfPY1jqMVGGi"}
