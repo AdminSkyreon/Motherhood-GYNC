@@ -256,7 +256,7 @@ export default function BookingFormCard({
 
         <div className="booking-flip-face booking-flip-back">
           <div className="booking-form-shell">
-            <BookingThankYouCard thankYou={thankYou} backHref={backHref} embedded />
+            <BookingThankYouCard thankYou={thankYou} embedded />
           </div>
         </div>
       </div>

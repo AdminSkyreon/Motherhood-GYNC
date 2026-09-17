@@ -56,7 +56,7 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
     "h-full w-full object-cover object-[center_22%] scale-[1.2] lg:-translate-y-[2%]";
 
   const formCard = thankYouMode ? (
-    <BookingThankYouCard thankYou={thankYou} backHref={homeHref} />
+    <BookingThankYouCard thankYou={thankYou} />
   ) : (
     <BookingFormCard
       hospitalSlug={site?.slug}
