@@ -28,9 +28,32 @@
     },
     "booking": {
       "enabled": true,
+      "popupDelaySeconds": null,
       "bookingForm": {
         "title": "Book an Appointment",
-        "subtext": "Fill in your details for a quick callback."
+        "subtext": "Fill in your details for a quick callback.",
+        "ctaLabel": "Book My Consultation",
+        "privacyText": "Your information stays private and is only used for appointment assistance.",
+        "languages": ["English", "Hindi"]
+      },
+      "lead": {
+        "hospitalId": "city-name",
+        "source": "landing-page-city-name",
+        "website": "MHI",
+        "unitnameC": "Motherhood_HospitalUnitKey",
+        "formEnquiryType": "Request a Callback",
+        "formEnquirySubtype": "",
+        "formCampaignName": "Gynaecology_Landing_CityName",
+        "enquirySource": "Website",
+        "campaignDefaults": {
+          "utm_source": "organic",
+          "utm_medium": "website"
+        }
+      },
+      "thankYou": {
+        "imageSrc": "/motherhood_logo.png",
+        "title": "Thank you!",
+        "message": "Our care team will contact you shortly."
       }
     },
     "featuresBar": [

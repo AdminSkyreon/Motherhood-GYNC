@@ -4,14 +4,21 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BookingThankYouCard from "@/components/BookingThankYouCard";
 import { getThankYouPath } from "@/lib/bookingPaths";
+import { collectCampaign } from "@/lib/campaign";
+import { hospitalToLeadContext } from "@/lib/hospital-lead-context";
+import { saveBookingConfirmation } from "@/lib/booking-confirmation";
+import { submitLead } from "@/lib/submit-lead";
 
 const fieldClass =
   "w-full rounded-xl border bg-white px-3.5 py-2.5 text-base text-mh-ink placeholder-gray-400 focus:outline-none focus:ring-1 font-['Montserrat',sans-serif]";
 
 const FLIP_MS = 680;
 
-function validateForm(values) {
-  const errors = {};
+type FormValues = { name: string; mobile: string; language: string };
+type FormErrors = Partial<Record<keyof FormValues, string>>;
+
+function validateForm(values: FormValues): FormErrors {
+  const errors: FormErrors = {};
   const name = values.name.trim();
 
   if (!name) {
@@ -31,10 +38,6 @@ function validateForm(values) {
     errors.mobile = "Mobile number should start with 6–9.";
   }
 
-  if (!values.language) {
-    errors.language = "Please select a preferred language.";
-  }
-
   return errors;
 }
 
@@ -49,6 +52,8 @@ function FieldError({ id, message }) {
 
 export default function BookingFormCard({
   hospitalSlug,
+  site,
+  lead,
   formTitle,
   subtext,
   languages,
@@ -56,10 +61,16 @@ export default function BookingFormCard({
   privacyText,
   thankYou,
   backHref = "/",
+  layout = "default",
 }) {
+  const formScope = layout === "popup" ? "popup" : "hero";
+  const nameInputId = `booking-name-${formScope}`;
+  const mobileInputId = `booking-mobile-${formScope}`;
+  const languageInputId = `booking-language-${formScope}`;
+
   const router = useRouter();
   const [values, setValues] = useState({ name: "", mobile: "", language: "" });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [flipped, setFlipped] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,7 +85,7 @@ export default function BookingFormCard({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -83,8 +94,30 @@ export default function BookingFormCard({
     if (Object.keys(nextErrors).length > 0) return;
 
     setIsSubmitting(true);
-    setFlipped(true);
 
+    const hospital = hospitalToLeadContext(site, hospitalSlug);
+    const campaign = collectCampaign(lead);
+
+    try {
+      const result = await submitLead({
+        form: values,
+        lead: lead || {},
+        hospital,
+        campaign,
+        meta: {
+          pageUrl: window.location.href,
+          submittedAt: new Date().toISOString(),
+          vertical: "gynaecology",
+        },
+      });
+      if (result?.requestId) {
+        saveBookingConfirmation(hospitalSlug, result.requestId);
+      }
+    } catch (err) {
+      console.error("[submitLead]", err);
+    }
+
+    setFlipped(true);
     window.setTimeout(() => {
       router.push(getThankYouPath(hospitalSlug));
     }, FLIP_MS);
@@ -96,11 +129,23 @@ export default function BookingFormCard({
       : "border-mh-pink-soft focus:ring-mh-pink";
 
   return (
-    <div className="booking-flip-scene mx-auto w-full max-w-[292px] sm:max-w-[308px] lg:ml-auto lg:mr-0">
+    <div
+      data-booking-form={formScope}
+      className={`booking-flip-scene mx-auto w-full ${
+        layout === "popup"
+          ? "booking-flip-scene--popup"
+          : "booking-flip-scene--stacked-fit max-w-none lg:max-w-[360px] lg:ml-auto lg:mr-0"
+      }`}
+    >
       <div className={`booking-flip-inner${flipped ? " is-flipped" : ""}`}>
         <div className="booking-flip-face booking-flip-front">
-          <div className="booking-form-shell">
-            <h3 className="text-lg font-extrabold leading-snug text-mh-blue font-['Montserrat',sans-serif] sm:text-xl">
+          <div
+            className={`booking-form-shell${layout === "popup" ? " booking-form-shell--popup" : ""}`}
+          >
+            <h3
+              id={layout === "popup" ? "booking-popup-title" : undefined}
+              className="text-lg font-extrabold leading-snug text-mh-blue font-['Montserrat',sans-serif] sm:text-xl"
+            >
               {formTitle}
             </h3>
             {subtext ? (
@@ -111,11 +156,11 @@ export default function BookingFormCard({
 
             <form className="mt-4 space-y-3" onSubmit={handleSubmit} noValidate>
               <div>
-                <label htmlFor="booking-name" className="sr-only">
+                <label htmlFor={nameInputId} className="sr-only">
                   Full Name
                 </label>
                 <input
-                  id="booking-name"
+                  id={nameInputId}
                   name="name"
                   type="text"
                   autoComplete="name"
@@ -124,18 +169,18 @@ export default function BookingFormCard({
                   onChange={(e) => updateField("name", e.target.value)}
                   disabled={isSubmitting}
                   aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? "booking-name-error" : undefined}
+                  aria-describedby={errors.name ? `${nameInputId}-error` : undefined}
                   className={`${fieldClass} ${borderFor("name")}`}
                 />
-                <FieldError id="booking-name-error" message={errors.name} />
+                <FieldError id={`${nameInputId}-error`} message={errors.name} />
               </div>
 
               <div>
-                <label htmlFor="booking-mobile" className="sr-only">
+                <label htmlFor={mobileInputId} className="sr-only">
                   Mobile Number
                 </label>
                 <input
-                  id="booking-mobile"
+                  id={mobileInputId}
                   name="mobile"
                   type="tel"
                   inputMode="numeric"
@@ -145,24 +190,24 @@ export default function BookingFormCard({
                   onChange={(e) => updateField("mobile", e.target.value)}
                   disabled={isSubmitting}
                   aria-invalid={Boolean(errors.mobile)}
-                  aria-describedby={errors.mobile ? "booking-mobile-error" : undefined}
+                  aria-describedby={errors.mobile ? `${mobileInputId}-error` : undefined}
                   className={`${fieldClass} ${borderFor("mobile")}`}
                 />
-                <FieldError id="booking-mobile-error" message={errors.mobile} />
+                <FieldError id={`${mobileInputId}-error`} message={errors.mobile} />
               </div>
 
               <div>
-                <label htmlFor="booking-language" className="sr-only">
+                <label htmlFor={languageInputId} className="sr-only">
                   Preferred Language
                 </label>
                 <select
-                  id="booking-language"
+                  id={languageInputId}
                   name="language"
                   value={values.language}
                   onChange={(e) => updateField("language", e.target.value)}
                   disabled={isSubmitting}
                   aria-invalid={Boolean(errors.language)}
-                  aria-describedby={errors.language ? "booking-language-error" : undefined}
+                  aria-describedby={errors.language ? `${languageInputId}-error` : undefined}
                   className={`${fieldClass} ${borderFor("language")} cursor-pointer appearance-none`}
                   style={{
                     backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DB5070'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e")`,
@@ -178,7 +223,7 @@ export default function BookingFormCard({
                     </option>
                   ))}
                 </select>
-                <FieldError id="booking-language-error" message={errors.language} />
+                <FieldError id={`${languageInputId}-error`} message={errors.language} />
               </div>
 
               <button

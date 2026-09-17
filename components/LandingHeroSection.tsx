@@ -57,6 +57,8 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
   ) : (
     <BookingFormCard
       hospitalSlug={site?.slug}
+      site={site}
+      lead={booking?.lead}
       formTitle={formTitle}
       subtext={subtext}
       languages={languages}
@@ -107,7 +109,7 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
 
           <div className="hidden lg:order-none lg:col-span-3 lg:block" aria-hidden="true" />
 
-          <div className="relative z-20 order-3 mt-4 w-full lg:order-none lg:col-span-4 lg:mt-0 lg:flex lg:justify-end">
+          <div className="relative z-20 order-3 mt-4 w-full min-w-0 lg:order-none lg:col-span-4 lg:mt-0 lg:flex lg:justify-end">
             {formCard}
           </div>
         </div>

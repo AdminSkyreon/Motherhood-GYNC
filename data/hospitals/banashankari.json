@@ -28,6 +28,7 @@
       "taglineEmphasisWord": "Woman's Life"
     },
     "booking": {
+      "popupDelaySeconds": 5,
       "bookingForm": {
         "title": "Book Your Gynaecology Consultation",
         "subtext": "Our Banashankari care team will help with packages, doctors & next steps.",
@@ -44,8 +45,16 @@
       "lead": {
         "hospitalId": "banashankari",
         "source": "landing-page-banashankari",
+        "website": "MHI",
         "unitnameC": "Motherhood_HospitalBanashankari",
-        "formEnquiryType": "Request a Callback"
+        "formEnquiryType": "Request a Callback",
+        "formEnquirySubtype": "",
+        "formCampaignName": "Gynaecology_Landing_Banashankari",
+        "enquirySource": "Website",
+        "campaignDefaults": {
+          "utm_source": "organic",
+          "utm_medium": "website"
+        }
       },
       "thankYou": {
         "imageSrc": "/motherhood_logo.png",

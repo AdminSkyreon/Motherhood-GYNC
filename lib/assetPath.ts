@@ -1,4 +1,4 @@
-function getBasePath() {
+function getBasePath(): string {
   const fromEnv = process.env.NEXT_PUBLIC_BASE_PATH || "";
   if (fromEnv) return fromEnv;
 
@@ -10,8 +10,8 @@ function getBasePath() {
   return "";
 }
 
-export function assetPath(src) {
-  if (!src || typeof src !== "string") return src;
+export function assetPath(src: string | undefined | null): string {
+  if (!src || typeof src !== "string") return "";
   if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) return src;
 
   const base = getBasePath();

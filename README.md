@@ -8,9 +8,42 @@ Pushes to `main` run [`.github/workflows/deploy.yml`](.github/workflows/deploy.y
 
 ---
 
+## Lead submissions (SimpleCRM)
+
+| Deploy mode | Env | Behavior |
+|-------------|-----|----------|
+| GitHub Pages (CI) | `NEXT_STATIC_EXPORT=true`, `NEXT_PUBLIC_LEAD_MOCK=true` | Static site; forms use mock submit (~1.2s), no `/api/leads` |
+| Server Next (production CRM) | `NEXT_PUBLIC_LEAD_PROXY=true`, `SIMPLECRM_*` on server | Browser → `POST {basePath}/api/leads` → SimpleCRM |
+| Static + direct endpoint | `lead.endpoint` in hospital JSON | Browser POSTs to public URL (only if CRM allows it) |
+
+Hospital CRM fields live in `data/hospitals/{slug}.json` under `sections.booking.lead` (`unitnameC`, `formCampaignName`, `campaignDefaults`, etc.). UTM/gclid values come from the page URL at submit time.
+
+After validation, users always reach thank-you (CRM errors are logged server-side). Env template: [`docs/lead-env.example`](docs/lead-env.example).
+
+| SimpleCRM field | Source |
+|-----------------|--------|
+| `unitname_c`, `form_enquirytype_c`, `form_campaign_name_c`, `enquiry_source_c`, `website` | `booking.lead` in hospital JSON |
+| `utm_*`, `gclid`, `campaignid`, `adgroupid`, `keyword` | URL query at submit (+ `lead.campaignDefaults` fallback) |
+| `last_name`, `phone_mobile`, `description` | Form (name, mobile, language) |
+| `source_url_c`, `preferred_appointment_date_c` | `meta.pageUrl`, submit date |
+| OAuth credentials | `SIMPLECRM_*` server env only |
+
+If HTML is on Pages but the API runs elsewhere, route `{basePath}/api/*` to the Node host via your CDN/reverse proxy so proxy mode stays same-origin.
+
+## Analytics (GA4 via GTM)
+
+| Layer | Behavior |
+|-------|----------|
+| All pages | [`GoogleTagManager`](components/GoogleTagManager.tsx) in root layout loads container `NEXT_PUBLIC_GTM_ID` (default `GTM-WFR5ZZMC`) with `lazyOnload`. Set `NEXT_PUBLIC_ANALYTICS_ENABLED=false` to disable. |
+| Landing | No custom `dataLayer` pushes — page views / tags fire from GTM (GA4 Configuration tag). |
+| After successful submit | [`saveBookingConfirmation`](lib/booking-confirmation.ts) stores `requestId` in `sessionStorage` (`motherhood-booking-ref:{slug}`). |
+| Thank-you | [`ThankYouConversionTracker`](components/ThankYouConversionTracker.tsx) consumes that token once; if missing, redirects to home. If present, pushes `generate_lead` (or `NEXT_PUBLIC_CONVERSION_EVENT`) via [`pushToDataLayer`](lib/gtm.ts). Map that event to GA4 / Google Ads inside GTM. |
+
+Reference property IDs (for GTM setup, not injected by the app): GA4 `G-6L9WVG3E8N`, Ads `AW-871619659` — see [`lib/analytics-config.ts`](lib/analytics-config.ts).
+
 ## Development
 
-This is a [Next.js](https://nextjs.org) app.
+This is a [Next.js](https://nextjs.org) app with **TypeScript** (`tsconfig.json`). Source lives under `app/`, `components/`, and `lib/` as `.ts` / `.tsx`.
 
 ## Getting Started
 

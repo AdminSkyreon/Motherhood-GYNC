@@ -2,13 +2,14 @@ import { assetPath } from "@/lib/assetPath";
 
 export default function Header({ site }) {
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between gap-2 bg-white px-3 py-2.5 shadow-md sm:gap-4 sm:px-6 sm:py-3 lg:px-12">
+    <header className="sticky top-0 z-50 bg-white py-1.5 shadow-md sm:py-2">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6 lg:px-12">
       <div className="flex min-w-0 flex-1 items-center">
         {site.assets?.logoSrc ? (
           <img
             src={assetPath(site.assets.logoSrc)}
             alt={site.hospitalName}
-            className="h-14 w-auto max-w-full object-contain object-left sm:h-16 lg:h-[72px]"
+            className="h-12 w-auto max-w-full object-contain object-left sm:h-16 lg:h-[4.5rem]"
           />
         ) : (
           <span className="truncate text-xl font-bold text-mh-blue sm:text-2xl">
@@ -18,11 +19,11 @@ export default function Header({ site }) {
       </div>
       <a
         href={`tel:${site.phone.tel}`}
-        className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-mh-pink px-3 py-2 text-[13px] font-semibold text-white shadow transition hover:opacity-90 font-['Montserrat',sans-serif] sm:gap-2.5 sm:px-5 sm:py-2.5 sm:text-base lg:px-6 lg:text-lg"
+        className="inline-flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-mh-pink px-3.5 py-2.5 text-sm font-semibold text-white shadow transition hover:opacity-90 font-['Montserrat',sans-serif] sm:min-h-0 sm:gap-2 sm:px-4 sm:py-1.5 sm:text-base lg:px-5 lg:py-2 lg:text-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 shrink-0 fill-current sm:h-5 sm:w-5"
+          className="h-4 w-4 shrink-0 fill-current sm:h-[1.125rem] sm:w-[1.125rem] lg:h-5 lg:w-5"
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
@@ -30,6 +31,7 @@ export default function Header({ site }) {
         </svg>
         {site.phone.display}
       </a>
+      </div>
     </header>
   );
 }

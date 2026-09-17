@@ -28,6 +28,7 @@
       "taglineEmphasisWord": "Woman's Life"
     },
     "booking": {
+      "popupDelaySeconds": 5,
       "bookingForm": {
         "title": "Book Your Gynaecology Consultation",
         "subtext": "Our Chennai care team will help with packages, doctors & next steps.",
@@ -44,8 +45,16 @@
       "lead": {
         "hospitalId": "chennai",
         "source": "landing-page-chennai",
+        "website": "MHI",
         "unitnameC": "Motherhood_HospitalChennai",
-        "formEnquiryType": "Request a Callback"
+        "formEnquiryType": "Request a Callback",
+        "formEnquirySubtype": "",
+        "formCampaignName": "Gynaecology_Landing_Chennai",
+        "enquirySource": "Website",
+        "campaignDefaults": {
+          "utm_source": "organic",
+          "utm_medium": "website"
+        }
       },
       "thankYou": {
         "imageSrc": "/motherhood_logo.png",

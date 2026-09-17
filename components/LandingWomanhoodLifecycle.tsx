@@ -11,8 +11,8 @@ export default function LandingWomanhoodLifecycle({ data }) {
   if (!data || !data.enabled) return null;
 
   return (
-    <section className="womanhood-lifecycle-section py-5 md:py-7 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="womanhood-lifecycle-section py-5 md:py-7">
+      <div className="landing-section-inner max-w-7xl mx-auto">
         <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>

@@ -1,11 +1,12 @@
 import React from "react";
+import BookNowButton from "@/components/BookNowButton";
 
 export default function LandingLocation({ locationData, hospitalName, phone }) {
   if (!locationData || !locationData.enabled) return null;
 
   return (
     <section className="landing-location-section py-5 md:py-7" id="location">
-      <div className="landing-location-section__inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="landing-location-section__inner landing-section-inner max-w-7xl mx-auto">
         <h2 className="section-title-mh section-title-mh--ink">
           {locationData.sectionTitle || "Hospital Location & Directions"}
         </h2>
@@ -46,9 +47,7 @@ export default function LandingLocation({ locationData, hospitalName, phone }) {
             </div>
 
             <div className="landing-location-actions">
-              <a href="#booking" className="landing-location-btn landing-location-btn--book">
-                Book Now
-              </a>
+              <BookNowButton className="landing-location-btn landing-location-btn--book" />
               <a
                 href={`tel:${phone?.tel || "08069549251"}`}
                 className="landing-location-btn landing-location-btn--call"

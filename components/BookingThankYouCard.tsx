@@ -2,7 +2,7 @@ import Link from "next/link";
 import { assetPath } from "@/lib/assetPath";
 
 const shellClass =
-  "booking-form-shell mx-auto w-full max-w-[292px] sm:max-w-[308px] lg:ml-auto lg:mr-0";
+  "booking-form-shell booking-flip-scene--stacked-fit mx-auto w-full max-w-none lg:max-w-[360px] lg:ml-auto lg:mr-0";
 
 export default function BookingThankYouCard({ thankYou, backHref = "/", embedded = false }) {
   const imageSrc = thankYou?.imageSrc || "/motherhood_logo.png";

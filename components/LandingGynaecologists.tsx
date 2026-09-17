@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { assetPath } from "@/lib/assetPath";
+import { handleBookNowActivate } from "@/lib/activateBookingForm";
 
 const PAUSE_MS = 7000;
 const AUTO_SCROLL_PX_PER_SEC = 32;
@@ -10,18 +11,18 @@ const DRAG_THRESHOLD_PX = 8;
 const AUTO_SCROLL_IGNORE_MS = 80;
 
 function scrollToBooking() {
-  const bookingSection = document.getElementById("booking");
-  if (bookingSection) {
-    bookingSection.scrollIntoView({ behavior: "smooth" });
-  }
+  handleBookNowActivate();
 }
 
-function DoctorCard({ doctor, onCardInteract }) {
+function DoctorCard({
+  doctor,
+  onCardInteract,
+}: {
+  doctor: Record<string, string | undefined>;
+  onCardInteract?: () => void;
+}) {
   return (
-    <article
-      className="doctor-card-mh"
-      onPointerDown={() => onCardInteract?.()}
-    >
+    <article className="doctor-card-mh">
       <div className="doctor-avatar-ring">
         <div className="doctor-avatar-inner">
           <div className="doctor-avatar-fallback">{doctor.initials}</div>
@@ -68,14 +69,14 @@ function DoctorCard({ doctor, onCardInteract }) {
 }
 
 function DoctorsScrollCarousel({ items, enableAutoScroll }) {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
-  const resumeTimerRef = useRef(null);
-  const rafRef = useRef(null);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number | null>(null);
   const lastFrameRef = useRef(0);
   const lastAutoScrollAtRef = useRef(0);
   const visibleRef = useRef(true);
-  const dragStartRef = useRef(null);
+  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const pauseAutoScroll = useCallback(() => {
     if (!enableAutoScroll) return;
@@ -90,6 +91,35 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
   const onCardInteract = useCallback(() => {
     pauseAutoScroll();
   }, [pauseAutoScroll]);
+
+  const normalizeInfiniteScroll = useCallback(
+    (el, fromAuto = false) => {
+      if (!el || !enableAutoScroll) return;
+      const segment = el.scrollWidth / 3;
+      if (segment < 1) return;
+
+      const min = segment;
+      const max = segment * 2;
+
+      if (el.scrollLeft >= max - 1) {
+        el.scrollLeft -= segment;
+        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
+      } else if (el.scrollLeft < min) {
+        el.scrollLeft += segment;
+        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
+      }
+    },
+    [enableAutoScroll],
+  );
+
+  useLayoutEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !enableAutoScroll) return;
+    const segment = el.scrollWidth / 3;
+    if (segment > 0) {
+      el.scrollLeft = segment;
+    }
+  }, [enableAutoScroll, items]);
 
   useEffect(() => {
     if (!enableAutoScroll) return;
@@ -106,6 +136,7 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
     io.observe(el);
 
     const onScroll = () => {
+      normalizeInfiniteScroll(el, false);
       if (performance.now() - lastAutoScrollAtRef.current < AUTO_SCROLL_IGNORE_MS) {
         return;
       }
@@ -120,13 +151,14 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
       const deltaMs = Math.min(now - lastFrameRef.current, 48);
       lastFrameRef.current = now;
 
-      if (visibleRef.current && !pausedRef.current && el.scrollWidth > el.clientWidth + 2) {
+      if (
+        visibleRef.current &&
+        !pausedRef.current &&
+        el.scrollWidth > el.clientWidth + 2
+      ) {
         lastAutoScrollAtRef.current = performance.now();
         el.scrollLeft += (AUTO_SCROLL_PX_PER_SEC * deltaMs) / 1000;
-        const half = el.scrollWidth / 2;
-        if (half > 0 && el.scrollLeft >= half - 2) {
-          el.scrollLeft -= half;
-        }
+        normalizeInfiniteScroll(el, true);
       }
 
       rafRef.current = requestAnimationFrame(tick);
@@ -140,13 +172,15 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
     };
-  }, [enableAutoScroll, pauseAutoScroll]);
+  }, [enableAutoScroll, pauseAutoScroll, normalizeInfiniteScroll]);
 
   const onPointerDown = (e) => {
+    if (e.pointerType === "touch") return;
     dragStartRef.current = { x: e.clientX, y: e.clientY };
   };
 
   const onPointerMove = (e) => {
+    if (e.pointerType === "touch") return;
     const start = dragStartRef.current;
     if (!start) return;
     const dx = Math.abs(e.clientX - start.x);
@@ -161,10 +195,12 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
     dragStartRef.current = null;
   };
 
-  const displayItems = enableAutoScroll ? [...items, ...items] : items;
+  const displayItems = enableAutoScroll
+    ? [...items, ...items, ...items]
+    : items;
 
   return (
-    <div className="doctors-scroll-wrap">
+    <div className="doctors-scroll-wrap doctors-scroll-wrap--bleed">
       <div
         ref={scrollRef}
         className={`doctors-scroll-outer${enableAutoScroll ? " doctors-scroll-outer--auto" : ""}`}
@@ -212,8 +248,8 @@ export default function LandingGynaecologists({ data }) {
 
   return (
     <section className="gynaecologists-section py-5 md:py-7">
-      <div className="gynaecologists-section__inner mx-auto max-w-[1160px]">
-        <h2 className="section-title-mh section-title-mh--ink px-4">
+      <div className="gynaecologists-section__inner landing-section-inner mx-auto max-w-[1160px]">
+        <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>
 

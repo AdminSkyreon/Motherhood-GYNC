@@ -14,7 +14,7 @@ export default function LandingSymptoms({ data }) {
 
   return (
     <section className="bg-mh-white py-5 md:py-7">
-      <div className="mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
+      <div className="landing-section-inner mx-auto max-w-[1160px]">
         <h2 className="section-title-mh section-title-mh--ink">{data.title}</h2>
 
         <div className="grid grid-cols-2 items-start gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-6">

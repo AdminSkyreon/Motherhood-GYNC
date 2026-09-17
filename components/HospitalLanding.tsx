@@ -12,6 +12,9 @@ import LandingLocation from "@/components/LandingLocation";
 import LandingFooter from "@/components/LandingFooter";
 import { getHospitalHomePath } from "@/lib/bookingPaths";
 import ThankYouScrollToBooking from "@/components/ThankYouScrollToBooking";
+import ThankYouConversionTracker from "@/components/ThankYouConversionTracker";
+import BookingFormScrollPopup from "@/components/BookingFormScrollPopup";
+import MobileStickyCTA from "@/components/MobileStickyCTA";
 
 export default function HospitalLanding({ hospital, thankYouMode = false }) {
   const {
@@ -32,8 +35,15 @@ export default function HospitalLanding({ hospital, thankYouMode = false }) {
   const backHref = getHospitalHomePath(site?.slug);
 
   return (
-    <main className="min-h-screen bg-mh-pink-soft/40 text-mh-ink">
-      {thankYouMode ? <ThankYouScrollToBooking /> : null}
+    <main
+      className={`min-h-screen bg-mh-pink-soft/40 text-mh-ink${thankYouMode ? "" : " landing-main--mobile-cta"}`}
+    >
+      {thankYouMode ? (
+        <>
+          <ThankYouConversionTracker slug={site?.slug} />
+          <ThankYouScrollToBooking />
+        </>
+      ) : null}
       <Header site={site} />
       <LandingHeroSection
         banner={banner}
@@ -72,6 +82,18 @@ export default function HospitalLanding({ hospital, thankYouMode = false }) {
       )}
 
       <LandingFooter data={hospital} />
+
+      {!thankYouMode && (
+        <>
+          <MobileStickyCTA phone={site?.phone} />
+          <BookingFormScrollPopup
+            booking={booking}
+            site={site}
+            thankYouMode={thankYouMode}
+            backHref={backHref}
+          />
+        </>
+      )}
     </main>
   );
 }

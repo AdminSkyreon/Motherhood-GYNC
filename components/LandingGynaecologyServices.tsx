@@ -23,9 +23,7 @@ function ServiceCardBody({ item, tapExpanded }) {
         {item.title}
       </h3>
       <div
-        className={`grid w-full grid-rows-[0fr] transition-all duration-300 ease-out group-hover:grid-rows-[1fr] ${
-          tapExpanded ? "max-sm:grid-rows-[1fr]" : "max-sm:grid-rows-[0fr]"
-        }`}
+        className={`gyn-service-details w-full ${tapExpanded ? "is-expanded" : ""}`}
       >
         <div className="overflow-hidden">
           <div className="gyn-service-desc-panel pt-2 sm:pt-2.5">
@@ -53,7 +51,7 @@ export default function LandingGynaecologyServices({ data }) {
 
   return (
     <section className="gynaecology-services-section py-5 md:py-7">
-      <div className="gynaecology-services-section__inner mx-auto max-w-[1160px] px-4 sm:px-6 lg:px-8">
+      <div className="gynaecology-services-section__inner landing-section-inner mx-auto max-w-[1160px]">
         <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>
@@ -74,7 +72,7 @@ export default function LandingGynaecologyServices({ data }) {
                     handleMobileTap(index);
                   }
                 }}
-                className={`gyn-service-card group relative flex h-full min-w-0 w-full cursor-pointer flex-col items-center p-3 text-center sm:p-5 sm:hover:z-20 ${
+                className={`gyn-service-card relative flex min-w-0 w-full cursor-pointer flex-col items-center self-start p-3 text-center sm:p-5 sm:hover:z-20 ${
                   isSelected ? "is-selected" : ""
                 }`}
               >

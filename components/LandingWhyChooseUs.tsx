@@ -14,7 +14,7 @@ export default function LandingWhyChooseUs({ data }) {
 
   return (
     <section className="why-choose-us-section py-5 md:py-7">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="landing-section-inner max-w-7xl mx-auto">
         <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>

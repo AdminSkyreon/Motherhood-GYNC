@@ -1,0 +1,21 @@
+# Copy to .env.local for local server CRM testing.
+# See README "Lead submissions (SimpleCRM)".
+
+# --- Static export (GitHub Pages CI) ---
+NEXT_STATIC_EXPORT=true
+NEXT_PUBLIC_LEAD_MOCK=true
+PAGES_BASE_PATH=/Motherhood-GYNC
+
+# --- Analytics (GTM on all pages; generate_lead on thank-you) ---
+# NEXT_PUBLIC_GTM_ID=GTM-WFR5ZZMC
+# NEXT_PUBLIC_ANALYTICS_ENABLED=true
+# NEXT_PUBLIC_CONVERSION_EVENT=generate_lead
+# Reference only (configured in GTM UI): GA4 G-6L9WVG3E8N, Ads AW-871619659
+
+# --- Production server Next (SimpleCRM via BFF) ---
+# NEXT_PUBLIC_LEAD_PROXY=true
+# SIMPLECRM_BASE_URL=https://motherhoodadmin.simplecrmondemand.com
+# SIMPLECRM_CLIENT_ID=
+# SIMPLECRM_CLIENT_SECRET=
+# SIMPLECRM_USERNAME=
+# SIMPLECRM_PASSWORD=

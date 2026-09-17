@@ -49,6 +49,8 @@ jobs:
         run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages_base.outputs.base_path }}
+          NEXT_STATIC_EXPORT: "true"
+          NEXT_PUBLIC_LEAD_MOCK: "true"
 
       # This repo's Pages site is built from the default branch root (GitHub's
       # "pages build & deployment" / README mode). Copy the static export beside

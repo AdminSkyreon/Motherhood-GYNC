@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import type { ReactNode } from "react";
+import GoogleTagManager from "@/components/GoogleTagManager";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,14 +20,17 @@ export const metadata = {
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
       data-base-path={basePath}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <GoogleTagManager />
+        {children}
+      </body>
     </html>
   );
 }

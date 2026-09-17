@@ -6,7 +6,7 @@ export default function LandingFaq({ data }) {
   if (!data || !data.enabled || !data.items || data.items.length === 0) return null;
 
   const [openIndex, setOpenIndex] = useState(null);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -25,8 +25,8 @@ export default function LandingFaq({ data }) {
   };
 
   return (
-    <section className="landing-faq-section py-5 md:py-7 px-4 sm:px-6 lg:px-8" ref={containerRef}>
-      <div className="landing-faq-inner">
+    <section className="landing-faq-section py-5 md:py-7" ref={containerRef}>
+      <div className="landing-faq-inner landing-section-inner">
         <h2 className="section-title-mh section-title-mh--ink">
           {data.title}
         </h2>
