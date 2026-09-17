@@ -45,6 +45,9 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
     form.privacyText ||
     "Your information stays private and is only used for appointment assistance.";
 
+  // Subtitle fallback: banner ka subtitle ya site ka hospital name automatisch
+  const subtitle = banner?.subtitle || site?.hospitalName || (site?.regionLabel ? `Motherhood Hospital ${site.regionLabel}` : "");
+
   const heroSrc = site.assets?.heroImageSrc;
   const heroImgClass =
     "h-full w-full scale-[1.12] object-cover object-[center_32%] sm:scale-[1.16] lg:scale-[1.2]";
@@ -76,7 +79,7 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
         </div>
       ) : null}
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-2 pt-0 sm:px-6 lg:px-12 lg:py-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-6 pt-0 sm:px-6 lg:px-12 lg:py-6">
         <div className="flex flex-col gap-0 lg:grid lg:grid-cols-12 lg:items-center lg:gap-6">
           {heroSrc ? (
             <div className="relative order-1 -mx-4 sm:-mx-6 lg:hidden">
@@ -108,6 +111,15 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
             {formCard}
           </div>
         </div>
+
+        {/* Hero Section ke bottom-left me 'N' badge ke paas light grey aur patla subtitle */}
+        {subtitle ? (
+          <div className="mt-4 lg:mt-2 text-left">
+            <span className="text-[11px] font-light tracking-wide text-gray-400 sm:text-xs">
+              {subtitle}
+            </span>
+          </div>
+        ) : null}
       </div>
     </section>
   );
