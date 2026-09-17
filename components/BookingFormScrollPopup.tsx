@@ -8,6 +8,10 @@ import {
   activateBookingForm,
   activateBookingFormAfterOpen,
 } from "@/lib/activateBookingForm";
+import {
+  HERO_BOOKING_FORM_ENGAGED_EVENT,
+  isHeroBookingFormEngaged,
+} from "@/lib/booking-popup-guard";
 
 /** Seconds from hospital JSON `booking.popupDelaySeconds`; empty / invalid = no popup. */
 export function resolvePopupDelayMs(booking) {
@@ -25,21 +29,43 @@ export default function BookingFormScrollPopup({ booking, site, thankYouMode, ba
 
   const close = useCallback(() => setOpen(false), []);
 
+  const suppressAutoPopupRef = useRef(isHeroBookingFormEngaged());
+  const autoPopupTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const triggerPopup = useCallback(() => {
     if (delayMs === null) return;
     if (hasTriggeredRef.current) return;
+    if (suppressAutoPopupRef.current || isHeroBookingFormEngaged()) return;
     hasTriggeredRef.current = true;
     setOpen(true);
   }, [delayMs]);
 
   useEffect(() => {
-    if (thankYouMode || delayMs === null) return;
+    const suppressAutoPopup = () => {
+      suppressAutoPopupRef.current = true;
+      if (autoPopupTimeoutRef.current) {
+        window.clearTimeout(autoPopupTimeoutRef.current);
+        autoPopupTimeoutRef.current = null;
+      }
+    };
+    window.addEventListener(HERO_BOOKING_FORM_ENGAGED_EVENT, suppressAutoPopup);
+    return () => window.removeEventListener(HERO_BOOKING_FORM_ENGAGED_EVENT, suppressAutoPopup);
+  }, []);
 
-    const timeoutId = window.setTimeout(() => {
+  useEffect(() => {
+    if (thankYouMode || delayMs === null) return;
+    if (suppressAutoPopupRef.current || isHeroBookingFormEngaged()) return;
+
+    autoPopupTimeoutRef.current = window.setTimeout(() => {
       triggerPopup();
     }, delayMs);
 
-    return () => window.clearTimeout(timeoutId);
+    return () => {
+      if (autoPopupTimeoutRef.current) {
+        window.clearTimeout(autoPopupTimeoutRef.current);
+        autoPopupTimeoutRef.current = null;
+      }
+    };
   }, [thankYouMode, delayMs, triggerPopup]);
 
   const openedFromBookNowRef = useRef(false);

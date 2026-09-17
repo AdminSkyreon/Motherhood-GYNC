@@ -7,6 +7,7 @@ import { getThankYouPath } from "@/lib/bookingPaths";
 import { collectCampaign } from "@/lib/campaign";
 import { hospitalToLeadContext } from "@/lib/hospital-lead-context";
 import { saveBookingConfirmation } from "@/lib/booking-confirmation";
+import { markHeroBookingFormEngaged } from "@/lib/booking-popup-guard";
 import { submitLead } from "@/lib/submit-lead";
 
 const fieldClass =
@@ -74,7 +75,12 @@ export default function BookingFormCard({
   const [flipped, setFlipped] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const notifyHeroEngaged = () => {
+    if (formScope === "hero") markHeroBookingFormEngaged();
+  };
+
   const updateField = (field, value) => {
+    notifyHeroEngaged();
     setValues((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {
@@ -154,7 +160,12 @@ export default function BookingFormCard({
               </p>
             ) : null}
 
-            <form className="mt-4 space-y-3" onSubmit={handleSubmit} noValidate>
+            <form
+              className="mt-4 space-y-3"
+              onSubmit={handleSubmit}
+              noValidate
+              onFocusCapture={notifyHeroEngaged}
+            >
               <div>
                 <label htmlFor={nameInputId} className="sr-only">
                   Full Name

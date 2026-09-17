@@ -51,6 +51,9 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
   const heroSrc = site.assets?.heroImageSrc;
   const heroImgClass =
     "h-full w-full scale-[1.12] object-cover object-[center_32%] sm:scale-[1.16] lg:scale-[1.2]";
+  /** Desktop full-bleed background — focal point slightly higher than mobile stack */
+  const heroImgClassDesktop =
+    "h-full w-full object-cover object-[center_22%] scale-[1.2] lg:-translate-y-[2%]";
 
   const formCard = thankYouMode ? (
     <BookingThankYouCard thankYou={thankYou} backHref={homeHref} />
@@ -76,7 +79,7 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
           className="pointer-events-none absolute inset-0 z-0 hidden lg:block"
           aria-hidden="true"
         >
-          <img src={assetPath(heroSrc)} alt="" className={heroImgClass} />
+          <img src={assetPath(heroSrc)} alt="" className={heroImgClassDesktop} />
           <div className="absolute inset-y-0 left-0 w-[48%] max-w-lg bg-gradient-to-r from-white/45 to-transparent" />
         </div>
       ) : null}

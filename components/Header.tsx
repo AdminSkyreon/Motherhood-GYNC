@@ -9,7 +9,7 @@ export default function Header({ site }) {
           <img
             src={assetPath(site.assets.logoSrc)}
             alt={site.hospitalName}
-            className="h-12 w-auto max-w-full object-contain object-left sm:h-16 lg:h-[4.5rem]"
+            className="h-14 w-auto max-w-full object-contain object-left sm:h-16 lg:h-[4.5rem]"
           />
         ) : (
           <span className="truncate text-xl font-bold text-mh-blue sm:text-2xl">
