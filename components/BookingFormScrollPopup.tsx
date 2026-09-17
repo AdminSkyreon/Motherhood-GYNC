@@ -30,7 +30,7 @@ export default function BookingFormScrollPopup({ booking, site, thankYouMode, ba
   const close = useCallback(() => setOpen(false), []);
 
   const suppressAutoPopupRef = useRef(isHeroBookingFormEngaged());
-  const autoPopupTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoPopupTimeoutRef = useRef<number | null>(null);
 
   const triggerPopup = useCallback(() => {
     if (delayMs === null) return;
