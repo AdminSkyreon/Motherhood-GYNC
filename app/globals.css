@@ -359,7 +359,38 @@ body {
   );
 }
 
+.why-choose-flip-scene {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.why-choose-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+  will-change: transform;
+}
+
+.why-choose-card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(1px);
+}
+
+.why-choose-card-face--back {
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+/* Mobile / tablet: tap toggles .is-flipped */
 @media (max-width: 1023px) {
+  .why-choose-flip-inner.is-flipped {
+    transform: rotateY(180deg);
+  }
+
   .why-choose-card-face__inner {
     justify-content: center;
   }
@@ -372,6 +403,17 @@ body {
     -webkit-overflow-scrolling: touch;
     text-align: center;
     padding-inline: 2px;
+  }
+}
+
+/* Desktop: hover flip only (no React toggle) */
+@media (min-width: 1024px) {
+  .why-choose-flip-scene:hover .why-choose-flip-inner {
+    transform: rotateY(180deg);
+  }
+
+  .why-choose-flip-inner.is-flipped {
+    transform: none;
   }
 }
 
