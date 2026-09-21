@@ -15,6 +15,7 @@ import ThankYouScrollToBooking from "@/components/ThankYouScrollToBooking";
 import ThankYouConversionTracker from "@/components/ThankYouConversionTracker";
 import BookingFormScrollPopup from "@/components/BookingFormScrollPopup";
 import MobileStickyCTA from "@/components/MobileStickyCTA";
+import FloatingVerticalBookNow from "@/components/FloatingVerticalBookNow";
 
 export default function HospitalLanding({ hospital, thankYouMode = false }) {
   const {
@@ -85,6 +86,7 @@ export default function HospitalLanding({ hospital, thankYouMode = false }) {
 
       {!thankYouMode && (
         <>
+          <FloatingVerticalBookNow />
           <MobileStickyCTA phone={site?.phone} />
           <BookingFormScrollPopup
             booking={booking}

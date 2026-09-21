@@ -1303,6 +1303,60 @@ body {
   box-shadow: 0 3px 10px color-mix(in srgb, var(--mh-blue) 25%, transparent);
 }
 
+/* Desktop: vertical Book Now on right edge after hero scroll */
+.floating-vertical-book-now {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 50%;
+  z-index: 44;
+  align-items: center;
+  justify-content: center;
+  min-height: 8.5rem;
+  padding: 1.125rem 0.625rem;
+  border: none;
+  border-radius: 14px 0 0 14px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--mh-white);
+  background-color: var(--mh-pink);
+  box-shadow:
+    -4px 0 18px color-mix(in srgb, var(--mh-pink) 32%, transparent),
+    0 4px 14px color-mix(in srgb, var(--mh-ink) 12%, transparent);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: translate(100%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    box-shadow 0.2s ease;
+}
+
+.floating-vertical-book-now--visible {
+  transform: translate(0, -50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-vertical-book-now:hover {
+  box-shadow:
+    -6px 0 22px color-mix(in srgb, var(--mh-pink) 38%, transparent),
+    0 6px 18px color-mix(in srgb, var(--mh-ink) 14%, transparent);
+}
+
+@media (min-width: 1024px) {
+  .floating-vertical-book-now.lg\:flex {
+    display: inline-flex;
+  }
+}
+
 .womanhood-lifecycle-section {
   background-color: var(--mh-white);
   background-image: linear-gradient(
