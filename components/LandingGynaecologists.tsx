@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback } from "react";
 import { assetPath } from "@/lib/assetPath";
 import { handleBookNowActivate } from "@/lib/activateBookingForm";
+import {
+  CAROUSEL_CARD_CLICK_PAUSE_MS,
+  useInfiniteAutoScroll,
+} from "@/lib/useInfiniteAutoScroll";
 
-const PAUSE_MS = 7000;
 const AUTO_SCROLL_PX_PER_SEC = 32;
-const DRAG_THRESHOLD_PX = 8;
-/** Ignore scroll events this long after we moved scrollLeft (avoids treating auto-scroll as user scroll). */
-const AUTO_SCROLL_IGNORE_MS = 80;
 
 function scrollToBooking() {
   handleBookNowActivate();
@@ -22,7 +22,7 @@ function DoctorCard({
   onCardInteract?: () => void;
 }) {
   return (
-    <article className="doctor-card-mh">
+    <article className="doctor-card-mh" onClick={() => onCardInteract?.()}>
       <div className="doctor-avatar-ring">
         <div className="doctor-avatar-inner">
           <div className="doctor-avatar-fallback">{doctor.initials}</div>
@@ -69,131 +69,15 @@ function DoctorCard({
 }
 
 function DoctorsScrollCarousel({ items, enableAutoScroll }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const rafRef = useRef<number | null>(null);
-  const lastFrameRef = useRef(0);
-  const lastAutoScrollAtRef = useRef(0);
-  const visibleRef = useRef(true);
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-
-  const pauseAutoScroll = useCallback(() => {
-    if (!enableAutoScroll) return;
-    pausedRef.current = true;
-    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => {
-      pausedRef.current = false;
-      resumeTimerRef.current = null;
-    }, PAUSE_MS);
-  }, [enableAutoScroll]);
+  const { scrollRef, pauseAfterUserScroll, pointerHandlers } = useInfiniteAutoScroll({
+    enabled: enableAutoScroll,
+    pxPerSec: AUTO_SCROLL_PX_PER_SEC,
+    itemCount: items.length,
+  });
 
   const onCardInteract = useCallback(() => {
-    pauseAutoScroll();
-  }, [pauseAutoScroll]);
-
-  const normalizeInfiniteScroll = useCallback(
-    (el, fromAuto = false) => {
-      if (!el || !enableAutoScroll) return;
-      const segment = el.scrollWidth / 3;
-      if (segment < 1) return;
-
-      const min = segment;
-      const max = segment * 2;
-
-      if (el.scrollLeft >= max - 1) {
-        el.scrollLeft -= segment;
-        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
-      } else if (el.scrollLeft < min) {
-        el.scrollLeft += segment;
-        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
-      }
-    },
-    [enableAutoScroll],
-  );
-
-  useLayoutEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !enableAutoScroll) return;
-    const segment = el.scrollWidth / 3;
-    if (segment > 0) {
-      el.scrollLeft = segment;
-    }
-  }, [enableAutoScroll, items]);
-
-  useEffect(() => {
-    if (!enableAutoScroll) return;
-
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.1 },
-    );
-    io.observe(el);
-
-    const onScroll = () => {
-      normalizeInfiniteScroll(el, false);
-      if (performance.now() - lastAutoScrollAtRef.current < AUTO_SCROLL_IGNORE_MS) {
-        return;
-      }
-      pauseAutoScroll();
-    };
-
-    el.addEventListener("scroll", onScroll, { passive: true });
-
-    lastFrameRef.current = performance.now();
-
-    const tick = (now) => {
-      const deltaMs = Math.min(now - lastFrameRef.current, 48);
-      lastFrameRef.current = now;
-
-      if (
-        visibleRef.current &&
-        !pausedRef.current &&
-        el.scrollWidth > el.clientWidth + 2
-      ) {
-        lastAutoScrollAtRef.current = performance.now();
-        el.scrollLeft += (AUTO_SCROLL_PX_PER_SEC * deltaMs) / 1000;
-        normalizeInfiniteScroll(el, true);
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      io.disconnect();
-      el.removeEventListener("scroll", onScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    };
-  }, [enableAutoScroll, pauseAutoScroll, normalizeInfiniteScroll]);
-
-  const onPointerDown = (e) => {
-    if (e.pointerType === "touch") return;
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const onPointerMove = (e) => {
-    if (e.pointerType === "touch") return;
-    const start = dragStartRef.current;
-    if (!start) return;
-    const dx = Math.abs(e.clientX - start.x);
-    const dy = Math.abs(e.clientY - start.y);
-    if (dx >= DRAG_THRESHOLD_PX && dx > dy) {
-      pauseAutoScroll();
-      dragStartRef.current = null;
-    }
-  };
-
-  const onPointerUp = () => {
-    dragStartRef.current = null;
-  };
+    pauseAfterUserScroll(CAROUSEL_CARD_CLICK_PAUSE_MS);
+  }, [pauseAfterUserScroll]);
 
   const displayItems = enableAutoScroll
     ? [...items, ...items, ...items]
@@ -204,10 +88,7 @@ function DoctorsScrollCarousel({ items, enableAutoScroll }) {
       <div
         ref={scrollRef}
         className={`doctors-scroll-outer${enableAutoScroll ? " doctors-scroll-outer--auto" : ""}`}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        {...pointerHandlers}
         role="region"
         aria-label="Doctors carousel"
         tabIndex={0}

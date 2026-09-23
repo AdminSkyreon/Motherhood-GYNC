@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  CAROUSEL_CARD_CLICK_PAUSE_MS,
+  useInfiniteAutoScroll,
+} from "@/lib/useInfiniteAutoScroll";
 
-const PAUSE_MS = 5000;
 const AUTO_SCROLL_PX_PER_SEC = 28;
-const AUTO_SCROLL_IGNORE_MS = 80;
-const DRAG_THRESHOLD_PX = 8;
 
 function RatingBadge({ label, rating, reviewCount, children }) {
   return (
@@ -24,7 +25,7 @@ function RatingBadge({ label, rating, reviewCount, children }) {
   );
 }
 
-function ReviewCard({ item, isExpanded, onExpand, onCollapse }) {
+function ReviewCard({ item, isExpanded, onExpand, onCollapse, onCardClick }) {
   const [truncated, setTruncated] = useState(false);
   const hadOverflowRef = useRef(false);
   const quoteRef = useRef<HTMLParagraphElement>(null);
@@ -52,6 +53,7 @@ function ReviewCard({ item, isExpanded, onExpand, onCollapse }) {
   return (
     <article
       className={`landing-reviews-card${isExpanded ? " landing-reviews-card--expanded" : ""}`}
+      onClick={() => onCardClick?.()}
     >
       <div className="landing-reviews-card__head">
         <div className="min-w-0">
@@ -117,131 +119,17 @@ function ReviewsScrollCarousel({
   onExpand,
   onCollapse,
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const rafRef = useRef<number | null>(null);
-  const lastFrameRef = useRef(0);
-  const lastAutoScrollAtRef = useRef(0);
-  const visibleRef = useRef(true);
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-
   const enableAutoScroll = items.length > 1;
 
-  const normalizeInfiniteScroll = useCallback(
-    (el, fromAuto = false) => {
-      if (!el || !enableAutoScroll) return;
-      const segment = el.scrollWidth / 3;
-      if (segment < 1) return;
+  const { scrollRef, pauseAfterUserScroll, pointerHandlers } = useInfiniteAutoScroll({
+    enabled: enableAutoScroll,
+    pxPerSec: AUTO_SCROLL_PX_PER_SEC,
+    itemCount: items.length,
+  });
 
-      const min = segment;
-      const max = segment * 2;
-
-      if (el.scrollLeft >= max - 1) {
-        el.scrollLeft -= segment;
-        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
-      } else if (el.scrollLeft < min) {
-        el.scrollLeft += segment;
-        if (fromAuto) lastAutoScrollAtRef.current = performance.now();
-      }
-    },
-    [enableAutoScroll],
-  );
-
-  useLayoutEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !enableAutoScroll) return;
-    const segment = el.scrollWidth / 3;
-    if (segment > 0) {
-      el.scrollLeft = segment;
-    }
-  }, [enableAutoScroll, items]);
-
-  const pauseAutoScroll = useCallback(
-    (ms = PAUSE_MS) => {
-      if (!enableAutoScroll) return;
-      pausedRef.current = true;
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-      resumeTimerRef.current = setTimeout(() => {
-        pausedRef.current = false;
-        resumeTimerRef.current = null;
-      }, ms);
-    },
-    [enableAutoScroll],
-  );
-
-  useEffect(() => {
-    if (!enableAutoScroll) return;
-
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.1 },
-    );
-    io.observe(el);
-
-    const onScroll = () => {
-      normalizeInfiniteScroll(el, false);
-      if (performance.now() - lastAutoScrollAtRef.current < AUTO_SCROLL_IGNORE_MS) {
-        return;
-      }
-      pauseAutoScroll();
-    };
-
-    el.addEventListener("scroll", onScroll, { passive: true });
-
-    lastFrameRef.current = performance.now();
-
-    const tick = (now) => {
-      const deltaMs = Math.min(now - lastFrameRef.current, 48);
-      lastFrameRef.current = now;
-
-      if (
-        visibleRef.current &&
-        !pausedRef.current &&
-        !expandedCardId &&
-        el.scrollWidth > el.clientWidth + 2
-      ) {
-        lastAutoScrollAtRef.current = performance.now();
-        el.scrollLeft += (AUTO_SCROLL_PX_PER_SEC * deltaMs) / 1000;
-        normalizeInfiniteScroll(el, true);
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      io.disconnect();
-      el.removeEventListener("scroll", onScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    };
-  }, [enableAutoScroll, pauseAutoScroll, expandedCardId, normalizeInfiniteScroll]);
-
-  const onPointerDown = (e) => {
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const onPointerMove = (e) => {
-    const start = dragStartRef.current;
-    if (!start) return;
-    const dx = Math.abs(e.clientX - start.x);
-    const dy = Math.abs(e.clientY - start.y);
-    if (dx >= DRAG_THRESHOLD_PX && dx > dy) {
-      pauseAutoScroll();
-      dragStartRef.current = null;
-    }
-  };
-
-  const onPointerUp = () => {
-    dragStartRef.current = null;
-  };
+  const onCardClick = useCallback(() => {
+    pauseAfterUserScroll(CAROUSEL_CARD_CLICK_PAUSE_MS);
+  }, [pauseAfterUserScroll]);
 
   const displayItems = enableAutoScroll
     ? [...items, ...items, ...items]
@@ -254,10 +142,7 @@ function ReviewsScrollCarousel({
         className={`landing-reviews-scroll-outer${
           enableAutoScroll ? " landing-reviews-scroll-outer--auto" : ""
         }`}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        {...pointerHandlers}
         role="region"
         aria-label="Patient reviews"
         tabIndex={0}
@@ -272,6 +157,7 @@ function ReviewsScrollCarousel({
                 isExpanded={expandedCardId === cardId}
                 onExpand={() => onExpand(cardId)}
                 onCollapse={onCollapse}
+                onCardClick={onCardClick}
               />
             );
           })}
