@@ -7,7 +7,7 @@
       "regionLabel": "Banashankari",
       "address": "Motherhood Women and Children's Hospital, Banashankari, Bangalore, Karnataka",
       "phone": {
-        "display": "080 67238946",
+        "display": "080 6723 8946",
         "tel": "08067238946"
       },
       "seo": {
@@ -86,7 +86,7 @@
     ],
     "symptoms": {
       "enabled": true,
-      "title": "What are you experiencing?",
+      "title": "What Are You Experiencing?",
       "items": [
         {
           "icon": "/icons/period.png",
@@ -100,7 +100,7 @@
         },
         {
           "icon": "/icons/pcos.png",
-          "title": "PCOS / Hormonal Concerns",
+          "title": "PMOS / Hormonal Concerns",
           "bullets": [
             "Weight gain",
             "Acne & hair growth",
@@ -166,7 +166,7 @@
         },
         {
           "icon": "/icons/pcos-care.png",
-          "title": "PCOS / PCOD Care",
+          "title": "PMOS / PCOD Care",
           "description": "Comprehensive lifestyle and hormonal management."
         },
         {
@@ -177,7 +177,7 @@
         {
           "icon": "/icons/endometriosis.png",
           "title": "Endometriosis Care",
-          "description": "Specialized pain relief and long-term care."
+          "description": "Specialised pain relief and long-term care."
         },
         {
           "icon": "/icons/vaginal-urinary.png",
@@ -240,22 +240,22 @@
         {
           "icon": "/icons/advanced-technology.png",
           "title": "Advanced Technology",
-          "description": "We utilize state-of-the-art medical technology and equipment to provide precise diagnostics and advanced treatments."
+          "description": "We utilise state-of-the-art medical technology and equipment to provide precise diagnostics and advanced treatments."
         },
         {
           "icon": "/icons/personalised-care.png",
           "title": "Personalised Care",
-          "description": "Every patient receives a customized treatment plan tailored specifically to their unique health needs and comfort."
+          "description": "Every patient receives a customised treatment plan tailored specifically to their unique health needs and comfort."
         },
         {
           "icon": "/icons/comprehensive-services.png",
           "title": "Comprehensive Services",
-          "description": "From routine checkups to specialized care, we offer a complete umbrella of healthcare services under one roof."
+          "description": "From routine checkups to specialised care, we offer a complete umbrella of healthcare services under one roof."
         },
         {
           "icon": "/icons/safe-environment.png",
           "title": "Safe & Comfortable Environment",
-          "description": "A warm, welcoming, and strictly sanitized space designed to keep you relaxed and secure during your visit."
+          "description": "A warm, welcoming, and strictly sanitised space designed to keep you relaxed and secure during your visit."
         },
         {
           "icon": "/icons/convenient-appointments.png",
@@ -271,7 +271,7 @@
         {
           "icon": "/icons/teen-women.png",
           "title": "Teen & Young Women",
-          "description": "Menstrual problems, PCOS, hormonal concerns",
+          "description": "Menstrual problems, PMOS, hormonal concerns",
           "cardColor": "pink"
         },
         {
@@ -308,7 +308,7 @@
         },
         {
           "question": "What causes irregular periods?",
-          "answer": "Irregular periods can be caused by hormonal imbalances, PCOS, thyroid disorders, extreme stress, or sudden weight fluctuations."
+          "answer": "Irregular periods can be caused by hormonal imbalances, PMOS, thyroid disorders, extreme stress, or sudden weight fluctuations."
         },
         {
           "question": "When should pelvic pain be checked?",
@@ -323,8 +323,8 @@
           "answer": "It is recommended for women to visit a gynaecologist at least once a year for a routine preventive health screening."
         },
         {
-          "question": "Can PCOS cause irregular periods?",
-          "answer": "Yes, Polycystic Ovary Syndrome (PCOS) is one of the most common causes of irregular or missed menstrual cycles."
+          "question": "Can PMOS cause irregular periods?",
+          "answer": "Yes, Polycystic Ovary Syndrome (PMOS) is one of the most common causes of irregular or missed menstrual cycles."
         },
         {
           "question": "When should I consult a doctor about menopause symptoms?",
@@ -346,9 +346,9 @@
       "items": [
         {
           "name": "Jayita Das",
-          "subtitle": "New mother · Banashankari",
+          "subtitle": "New mother ",
           "rating": 5,
-          "review": "Having Doctor Nagaveni R as my OB-GYN for both of my pregnancies has been a true blessing. She is incredibly skilled, professional and attentive.Thanks to her guidance and encouragement, I was able to have a successful normal delivery for the second time. I highly recommend Dr. Nagaveni R to anyone looking for a knowledgeable and compassionate gynecologist. Special thanks to all the doctors, sisters and staff for a wonderful and caring experience at Motherhood hospital kothanur."
+          "review": "Having Doctor Nagaveni R as my OB-GYN for both of my pregnancies has been a true blessing. She is incredibly skilled, professional and attentive.Thanks to her guidance and encouragement, I was able to have a successful normal delivery for the second time. I highly recommend Dr. Nagaveni R to anyone looking for a knowledgeable and compassionate gynecologist. Special thanks to all the doctors, sisters and staff for a wonderful and caring experience at Motherhood hospital banashankari."
         },
         {
           "name": "Rabiya Sameen",
@@ -358,7 +358,7 @@
         },
         {
           "name": "Monikaa Malik",
-          "subtitle": "Banashankari",
+          "subtitle": "New mother ",
           "rating": 5,
           "review": "Dr. Archana Pathak is an amazing gynaecologist. She supported us through a complicated delivery, and her expertise, calm demeanor, and encouragement were exactly what we needed. She turned a stressful situation into a smooth and successful experience. We are forever thankful for her care and highly recommend her to anyone looking for a compassionate and expert doctor."
         },
@@ -404,7 +404,7 @@
       "enabled": true,
       "sectionTitle": "Motherhood Hospital Banashankari",
       "cardTitle": "Motherhood Hospital Banashankari",
-      "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7777.401749514473!2d77.561086!3d12.926937!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3e29ef71a267%3A0x8a9de5ce7a6281a8!2sMotherhood%20Hospital%20-%20Best%20Maternity%2C%20Child%20Care%20%26%20Pregnancy%20Hospital%20in%20Banashankari%20%7C%20Gynecologist%20%2C%20Paediatrics!5e0!3m2!1sen!2sin!4v1789557629194!5m2!1sen!2sin",
+      "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7777.401749514473!2d77.561086!3d12.926937!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3e29ef71a267%3A0x8a9de5ce7a6281a8!2sMotherhood%20Hospital%20-%20Best%20Maternity%2C%20Child%20Care%20%26%20Pregnancy%20Hospital%20in%20Banashankari%20%7C%20Gynaecologist%20%2C%20Paediatrics!5e0!3m2!1sen!2sin!4v1789557629194!5m2!1sen!2sin",
       "highlights": [
         {
           "icon": "📍",
@@ -412,7 +412,7 @@
         },
         {
           "icon": "⏱️",
-          "text": "Open 24 hours — labor, emergency, and delivery support always available"
+          "text": "Open 24 hours — labour, emergency, and delivery support always available"
         },
         {
           "icon": "👩‍⚕️",
@@ -420,7 +420,7 @@
         },
         {
           "icon": "📞",
-          "text": "Call 080 67238946 for consultation booking or package queries"
+          "text": "Call 080 6723 8946 for consultation booking or package queries"
         },
         {
           "icon": "⭐",
@@ -430,7 +430,7 @@
     },
     "footer": {
       "enabled": true,
-      "copyrightText": "© 2026 Motherhood Hospital Banashankari · Banashankari · 080 67238946",
+      "copyrightText": "© 2026 Motherhood Hospital Banashankari · Banashankari · 080 6723 8946",
       "privacyPolicyText": "Privacy Policy",
       "termsConditionsText": "Terms & Conditions"
     }

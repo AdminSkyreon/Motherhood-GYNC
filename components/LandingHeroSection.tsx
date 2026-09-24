@@ -120,7 +120,7 @@ export default function LandingHeroSection({ banner, site, booking, thankYouMode
         {/* Hero Section ke bottom-left me 'N' badge ke paas light grey aur patla subtitle */}
         {subtitle ? (
           <div className="mt-4 lg:mt-2 text-left">
-            <span className="text-[11px] font-light tracking-wide text-gray-400 sm:text-xs">
+            <span className="text-[11px] font-light tracking-wide text-black-600 sm:text-xs">
               {subtitle}
             </span>
           </div>
