@@ -7,7 +7,7 @@
       "regionLabel": "Banashankari",
       "address": "Motherhood Women and Children's Hospital, Banashankari, Bangalore, Karnataka",
       "phone": {
-        "display": "080 6723 8946",
+        "display": "080 67238946",
         "tel": "08067238946"
       },
       "seo": {
@@ -420,7 +420,7 @@
         },
         {
           "icon": "📞",
-          "text": "Call 080 6723 8946 for consultation booking or package queries"
+          "text": "Call 080 67238946 for consultation booking or package queries"
         },
         {
           "icon": "⭐",
@@ -430,7 +430,7 @@
     },
     "footer": {
       "enabled": true,
-      "copyrightText": "© 2026 Motherhood Hospital Banashankari · Banashankari · 080 6723 8946",
+      "copyrightText": "© 2026 Motherhood Hospital Banashankari · Banashankari · 080 67238946",
       "privacyPolicyText": "Privacy Policy",
       "termsConditionsText": "Terms & Conditions"
     }
