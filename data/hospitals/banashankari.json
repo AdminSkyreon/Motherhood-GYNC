@@ -35,11 +35,16 @@
         "ctaLabel": "Book My Consultation",
         "privacyText": "Your information stays private and is only used for appointment assistance.",
         "languages": [
-          "English",
+         "English",
           "Hindi",
-          "Tamil",
           "Kannada",
-          "Telugu"
+          "Malayalam",
+          "Marathi",
+          "Tamil",
+          "Telugu",
+          "Bengali",
+          "Punjabi",
+          "Gujarati"
         ]
       },
       "lead": {
