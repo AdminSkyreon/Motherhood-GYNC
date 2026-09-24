@@ -7,4 +7,4 @@
 :HL["/Motherhood-GYNC/icons/reproductive-years.png","image"]
 :HL["/Motherhood-GYNC/icons/midlife.png","image"]
 :HL["/Motherhood-GYNC/icons/menopause1.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"slug","param":{"type":"d","key":"banashankari","siblings":["api","thank-you"]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"0e9oPPH3RIrJTOJGTqn0v"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"slug","param":{"type":"d","key":"banashankari","siblings":["api","thank-you"]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"FmlFxzQUrIKFLxgq5bCnc"}
